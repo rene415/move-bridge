@@ -45,11 +45,14 @@ object Prefs {
     fun autoRestart(c: Context) = sp(c).getBoolean(AUTO_RESTART, false)
     fun setAutoRestart(c: Context, v: Boolean) = sp(c).edit().putBoolean(AUTO_RESTART, v).apply()
 
-    /** Keep playing on the phone's speaker too. Default off (like an iPhone on the Move). */
-    fun playOnPhone(c: Context) = sp(c).getBoolean(PLAY_ON_PHONE, false)
+    /**
+     * Keep playing on the phone's speaker too. Default on: a new user should hear something even
+     * before monitoring is switched on at the Move.
+     */
+    fun playOnPhone(c: Context) = sp(c).getBoolean(PLAY_ON_PHONE, true)
     fun setPlayOnPhone(c: Context, v: Boolean) = sp(c).edit().putBoolean(PLAY_ON_PHONE, v).apply()
 
-    /** Media volume to restore after a boost (-1 = none pending). See VolumeBooster. */
+    /** Media volume to restore after sending (-1 = none pending). See VolumeHold. */
     fun savedVolume(c: Context) = sp(c).getInt(SAVED_VOLUME, -1)
     fun setSavedVolume(c: Context, v: Int) = sp(c).edit().putInt(SAVED_VOLUME, v).apply()
 

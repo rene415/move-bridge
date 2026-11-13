@@ -13,7 +13,7 @@ import android.os.IBinder
 import android.os.Looper
 import com.renelabs.movebridge.capture.CaptureSource
 import com.renelabs.movebridge.capture.PlaybackWatcher
-import com.renelabs.movebridge.capture.VolumeBooster
+import com.renelabs.movebridge.capture.VolumeHold
 import com.renelabs.movebridge.capture.ProjectionCapture
 import com.renelabs.movebridge.capture.ShellCapture
 
@@ -71,7 +71,7 @@ class BridgeService : Service() {
     private lateinit var usb: UsbLink
     private lateinit var direct: DirectLink
     private lateinit var notifier: BridgeNotifier
-    private lateinit var booster: VolumeBooster
+    private lateinit var volume: VolumeHold
     private lateinit var quiet: Quiet
     private val tonePlayer = TonePlayer()
     /** Re-routes apps that start playing mid-stream (Bridge mode with audio-only capture). */
@@ -112,8 +112,8 @@ class BridgeService : Service() {
         usb = UsbLink(this)
         direct = DirectLink(this)
         notifier = BridgeNotifier(this)
-        booster = VolumeBooster(this)
-        booster.restore()  // in case we were killed mid-stream with the volume raised
+        volume = VolumeHold(this)
+        volume.restore()   // in case we were killed mid-stream with the volume held
         quiet = Quiet(this)
         quiet.restore()    // same, for the ringer mode
     }
@@ -187,7 +187,7 @@ class BridgeService : Service() {
      */
     private fun startDirect(dev: UsbDevice, tone: Boolean, retry: Boolean = true) {
         val s = beginConnect()
-        stopShellExtras()  // normal volume again before Android switches outputs
+        stopCaptureExtras()  // normal volume again before Android switches outputs
         detachUsb()        // Bridge mode must let go of the Move: that brings its sound card back
         AudioOnly.withHelper(this, main) { svc ->
             when {
@@ -262,35 +262,41 @@ class BridgeService : Service() {
     }
 
     /**
-     * "Also play on phone" changed. Bridge mode: reopens audio-only capture with the new setting,
-     * keeping the USB stream running (the helper registers the new routing before dropping the
-     * old one, so there's no gap or blip).
+     * "Also play on phone" changed while sending. With the helper's capture: reopens it with the
+     * new setting, keeping the USB stream running (the helper registers the new routing before
+     * dropping the old one, so there's no gap or blip).
      */
     private fun recapture() {
         if (directActive) return direct.refresh()  // Direct mode: the helper switches the phone speaker on or off
-        val old = capture as? ShellCapture ?: return stopIfIdle()  // nothing open, or screen-share capture
+        if (usbActive && capture?.isProjection == true) return applyVolume()  // Android's capture: only the volume changes
+        val old = capture as? ShellCapture ?: return stopIfIdle()  // nothing open
         old.close(stopHelper = false)
         capture = null
         openShell(announce = false) { ok -> if (ok) applyVolume() else shellFailed() }
     }
 
-    /** Full media volume while the phone is silent (it sets the captured level); else restore. */
+    /** "Also play on phone" off: hold the phone's volume where the capture in use needs it (see [VolumeHold]). */
     private fun applyVolume() {
-        if (capture is ShellCapture && !Prefs.playOnPhone(this)) booster.boost() else booster.restore()
+        val silent = !Prefs.playOnPhone(this)
+        when {
+            silent && capture is ShellCapture -> volume.max()
+            silent && capture?.isProjection == true -> volume.zero()
+            else -> volume.restore()
+        }
     }
 
-    /** Audio-only streaming extras: volume boost and re-routing of apps that start later. */
-    private fun startShellExtras() {
+    /** While captured audio is being sent: the phone's volume, and (helper capture) re-routing of apps that start later. */
+    private fun startCaptureExtras() {
         applyVolume()
-        if (watcher != null) return
+        if (capture !is ShellCapture || watcher != null) return
         watcher = PlaybackWatcher(this, { Prefs.playOnPhone(this) }) { if (usbActive && !toneActive) recapture() }
             .also { it.start() }
     }
 
-    private fun stopShellExtras() {
+    private fun stopCaptureExtras() {
         watcher?.stop()
         watcher = null
-        booster.restore()
+        volume.restore()
     }
 
     private fun shellFailed() = fail(getString(R.string.svc_shell_failed), getString(R.string.svc_shell_failed_detail))
@@ -301,7 +307,7 @@ class BridgeService : Service() {
     }
 
     private fun closeCapture() {
-        stopShellExtras()
+        stopCaptureExtras()
         captureSeq++
         capture?.close()
         capture = null
@@ -338,7 +344,7 @@ class BridgeService : Service() {
     private fun attached(dev: UsbDevice, toneMode: Boolean) {
         usbActive = true
         connected(dev, toneMode)
-        if (!toneMode && capture is ShellCapture) startShellExtras()
+        if (!toneMode) startCaptureExtras()
         main.removeCallbacks(ticker)
         main.post(ticker)
     }
@@ -359,6 +365,7 @@ class BridgeService : Service() {
     private fun detachLinks() {
         detachUsb()
         detachDirect()
+        stopCaptureExtras()  // "stay ready" keeps the capture open, but nothing is being sent now
         quiet.restore()
         toneActive = false
         attached = null
@@ -433,13 +440,10 @@ class BridgeService : Service() {
         else -> BridgeState(Phase.STREAMING, getString(R.string.svc_stream_title), streamDetail())
     }
 
-    /** Bridge mode's detail text, with a volume tip or a note about Direct mode when they apply. */
+    /** Bridge mode's detail text, with a note when Direct mode was wanted but couldn't start. */
     private fun streamDetail(): String {
-        // The phone plays too (so we can't raise its volume for the user): tip when it is low.
-        val phonePlays = capture !is ShellCapture || Prefs.playOnPhone(this)
-        val tip = if (phonePlays && booster.isLow()) "\n" + getString(R.string.svc_volume_tip) else ""
         val note = if (directFellBack) "\n" + getString(R.string.svc_direct_fallback) else ""
-        return getString(R.string.svc_stream_detail) + tip + note
+        return getString(R.string.svc_stream_detail) + note
     }
 
     private fun showStats(text: String) {

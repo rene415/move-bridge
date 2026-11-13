@@ -38,9 +38,9 @@ To stop: tap **Stop sending audio** in the notification or in the app. Unpluggin
 <img src="docs/screens/notification.png" width="320" alt="The notification with its Stop sending audio button">
 
 Good to know:
-- Your phone keeps playing the sound too.
+- Your phone plays along. To hear only the Move, switch off **Also play on phone**.
+- The Move always gets the full level, whatever the phone's volume is.
 - While sending, Android shows its capture icon and may hide the contents of notifications. That is Android's rule for any capture.
-- For the fullest level on the Move, turn the phone's media volume all the way up.
 - Apps that block capture (some streaming services) come through silent.
 
 ## Settings
@@ -48,7 +48,7 @@ Good to know:
 |---|---|
 | **Start when Move connects** | Plug in and sending starts, with only Android's prompt in between. |
 | **Mute notifications while sending** | Puts the phone on vibrate while sending, so rings and pings don't land in your samples. Alarms still sound. |
-| **Also play on phone** | Always on: your phone plays along. (Advanced mode can send to the Move only.) |
+| **Also play on phone** | On: your phone plays along. Off: only the Move plays (Move Bridge turns the phone's own volume to zero while sending). |
 | **Stay ready in background** | Approve Android's prompt once, and Move Bridge stays ready for the next plug-in until the phone restarts. |
 | **Advanced mode** | For tinkerers: a lower-delay direct connection. See below. |
 
@@ -57,7 +57,17 @@ Good to know:
 There is also a Quick Settings tile ("Move Bridge") to start and stop from the pull-down panel.
 
 ## Advanced mode (optional)
-Advanced mode can make Android play straight to the Move, like USB-C headphones: less delay, no capture prompt, and the phone can stay silent. It needs a one-time setup in Android's Developer options, so it is off unless you switch it on. Everything about it is in [docs/advanced.md](docs/advanced.md).
+Advanced mode makes Android play straight to the Move, like USB-C headphones. It needs a one-time setup in Android's Developer options, so it is off unless you switch it on.
+
+What it gains, measured on our test phone:
+
+| | Regular | Advanced |
+|---|---|---|
+| Instrument or game app, while playing | about 130 ms delay | about 25 ms |
+| Music or video app, pressing play | about 220 ms | about 125 ms |
+| Starting | Android's capture prompt | nothing to tap |
+
+If you play instruments into the Move, it is worth it. If you sample from music and video apps, Regular does the job. The full comparison is in [docs/regular-vs-advanced.md](docs/regular-vs-advanced.md), and the setup in [docs/advanced.md](docs/advanced.md).
 
 ## Feedback
 This is a beta, and your feedback decides what gets fixed next. In the app, tap **Send feedback**: pick what it's about, write a line or two, and send it. The app never sends anything by itself, and you can read the whole report before it goes out.

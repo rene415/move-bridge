@@ -18,12 +18,11 @@ import com.renelabs.movebridge.adb.Pairing
  * The Settings card. A regular user sees:
  *   Start when Move connects
  *   Mute notifications while sending
- *   Also play on phone         (locked on: with basic sending the phone always plays along)
+ *   Also play on phone
  *   Stay ready in background
  *   Advanced mode
  * Advanced mode is the one switch that reveals everything technical:
  *   a to-do line while the one-time setup needs something (no switch; tap it)
- *   Also play on phone         (a real switch once the setup is done)
  *   Start automatically        (once the setup is done; replaces Stay ready)
  *   and, outside this card, the connection details and the setup guide link.
  * [onLocalError] shows a message on the status card (title, detail res ids).
@@ -46,7 +45,7 @@ class SettingsPanel(private val a: Activity, private val onLocalError: (Int, Int
             this.title.setText(title)
             this.detail.setText(detail)
             toggle.setOnCheckedChangeListener { _, v -> onChange?.invoke(v) }
-            body.setOnClickListener { if (toggle.isEnabled) toggle.toggle() }
+            body.setOnClickListener { toggle.toggle() }
         }
 
         fun bind(initial: Boolean, onChange: (Boolean) -> Unit) {
@@ -55,12 +54,10 @@ class SettingsPanel(private val a: Activity, private val onLocalError: (Int, Int
         }
 
         /** Sets the switch from code, which must not count as the user changing it. */
-        fun show(checked: Boolean, enabled: Boolean = true) {
+        fun show(checked: Boolean) {
             val listener = onChange
             onChange = null
             toggle.isChecked = checked
-            toggle.isEnabled = enabled
-            toggle.alpha = if (enabled) 1f else LOCKED_ALPHA  // a locked switch has to look locked
             onChange = listener
         }
     }
@@ -145,8 +142,7 @@ class SettingsPanel(private val a: Activity, private val onLocalError: (Int, Int
         // The helper's options apply once Advanced mode is on and the setup has been done.
         val helper = advancedOn && status != Status.NOT_SET_UP && status != Status.UNSUPPORTED
         renderSetupRow(advancedOn, status)
-        // Without the helper, capture is Android's own, and that can't silence the phone.
-        playOnPhone.show(if (helper) Prefs.playOnPhone(a) else true, enabled = helper)
+        // How "off" works differs: Android's own capture needs the phone's volume at zero.
         playOnPhone.detail.setText(if (helper) R.string.play_on_phone_body else R.string.play_on_phone_basic)
         autoRestart.root.visibility = if (helper) View.VISIBLE else View.GONE
         stayReady.root.visibility = if (helper) View.GONE else View.VISIBLE
@@ -163,7 +159,6 @@ class SettingsPanel(private val a: Activity, private val onLocalError: (Int, Int
     }
 
     private companion object {
-        const val LOCKED_ALPHA = 0.4f
         /** Parts of the main screen, outside this card, that only Advanced mode shows. */
         val ADVANCED_VIEWS = intArrayOf(R.id.detailsCard, R.id.linkSetup)
     }

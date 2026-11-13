@@ -2,6 +2,11 @@
 
 The app shows the newest entry once after each update ("What's new").
 
+## 0.19
+- **Also play on phone** is a real switch for everyone. Off: only the Move plays (in Regular mode, Move Bridge turns the phone's own volume to zero while sending). It is on by default, so a first start is never silent.
+- The Move gets the full level whatever the phone's volume is; the old tip to turn the volume up was wrong for Regular mode and is gone.
+- Measured comparison of Regular and Advanced mode: [docs/regular-vs-advanced.md](docs/regular-vs-advanced.md).
+
 ## 0.18: first public release
 - **Sending needs no setup:** plug in the Move, tap Start, approve Android's capture prompt.
 - **Starts when the Move connects**, with a Stop button in the notification and a Quick Settings tile.

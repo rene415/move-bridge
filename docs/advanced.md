@@ -4,20 +4,13 @@ Everything on this page is optional. Move Bridge works without it; see the [READ
 
 ## What it gives you
 With Advanced mode on and its one-time setup done, Android itself plays to the Move, like USB-C headphones or an iPhone:
-- **Less delay**, most of all in instrument and game apps.
+- **Much less delay for instrument and game apps:** about 25 ms instead of about 130 ms on our test phone.
+- **Music and video apps start sooner:** about 125 ms after pressing play instead of about 220 ms.
 - **No capture prompt**, no capture icon, and notifications stay visible.
-- **The phone can stay silent** ("Also play on phone" becomes a real switch).
 - The phone's volume buttons set the level, and the Move's MIDI keeps working on the phone.
+- Move Bridge itself uses next to no processor time.
 
-Delay, measured on a Samsung Galaxy S26 Ultra (your phone will differ; the app shows its own measurement under **Connection details**):
-
-| | Tap-to-hear | While playing |
-|---|---|---|
-| Advanced, instrument and game apps | about 40 ms | about 25 ms |
-| Advanced, music and video apps | about 120-185 ms | about 210 ms (video stays in sync) |
-| Basic sending | about 80 ms | about 150-170 ms |
-
-Android itself sets these numbers. Details: [latency-and-direct-route.md](latency-and-direct-route.md).
+All the numbers, and how they were measured: [regular-vs-advanced.md](regular-vs-advanced.md). The app shows its own measurement for your phone under **Connection details**.
 
 ## What it costs
 - It needs Android 13 or newer and a one-time setup in Android's **Developer options**.
@@ -44,7 +37,7 @@ From then on, plugging in the Move starts sending by itself:
 ## What Advanced mode adds to the app
 | | |
 |---|---|
-| **Also play on phone** | A real switch: off sends to the Move only, on plays on both together. |
+| **Also play on phone** | Phone and Move play together from the same mixer, and the phone's volume sets the level for both. |
 | **Start automatically** | After a phone restart, Move Bridge turns Wireless debugging on for a moment by itself to start its helper again, then off. Needs Wi-Fi, and only acts on the Wi-Fi network where the setup was done. |
 | **Connection details** | What route is in use and the delay measured on your phone. |
 | **Setup guide** | The four steps above, any time. |
@@ -73,6 +66,7 @@ Logs: `adb logcat -s MoveBridge`.
 ## How it works
 - [move-usb-descriptor.md](move-usb-descriptor.md): the Move's USB interfaces and the streaming handshake.
 - [audio-only-capture.md](audio-only-capture.md): the helper, and working without screen sharing.
-- [latency-and-direct-route.md](latency-and-direct-route.md): why Android shows the Move as MIDI only, the direct connection, and the measurements.
+- [regular-vs-advanced.md](regular-vs-advanced.md): the measured comparison of the two modes.
+- [latency-and-direct-route.md](latency-and-direct-route.md): why Android shows the Move as MIDI only, and how the direct connection works.
 - [releasing.md](releasing.md): how a release is made.
 - [../CHANGELOG.md](../CHANGELOG.md): what changed in each version.

@@ -36,17 +36,22 @@ Android asks which app to open on every plug-in when more than one app accepts t
 One wrinkle: `UsbDevice` refuses to be read in a process that claims to be a system process, which the helper does (`ShellIdentity`). `ShellIdentity.asOrdinaryProcess` drops that claim just while the device list is read.
 
 ## Measurements (phone side: until audio leaves the phone)
+Galaxy S26 Ultra, Android 17. Middle values; the user-facing summary is in [regular-vs-advanced.md](regular-vs-advanced.md).
 
 | Route | App type | First sound (tap-to-hear) | Continuous playback |
 |---|---|---|---|
-| Bridge (capture, today) | any app | ~80 ms (60 capture + 18 buffer + 4 USB) | ~150-170 ms |
-| Direct | ordinary media app (default track, "deep buffer") | ~120-185 ms | ~210 ms, but apps know it, so video stays in sync |
-| Direct | low-latency app (48 kHz fast track) | ~40-45 ms | **~27 ms** |
+| Direct (Advanced mode) | low-latency app (48 kHz fast track) | ~45 ms | **~25 ms** |
+| Direct (Advanced mode) | ordinary media app (default track, "deep buffer") | ~125 ms (114-177) | ~210 ms, but apps know it, so video stays in sync |
+| Bridge, Android's capture (Regular mode) | low-latency app | ~175 ms | ~130 ms |
+| Bridge, Android's capture (Regular mode) | ordinary media app | ~220 ms (181-257) | ~290 ms (238-318) |
+| Bridge, helper capture with the phone silent (fallback inside Advanced mode) | ordinary media app | ~80 ms | ~150-170 ms |
 | Phone speaker, for reference | ordinary media app | not measured | ~213 ms |
 
-- Direct numbers are from `AudioTrack` timestamps (the app shows the same measurement under Connection details); Bridge numbers are from click tests (a click played as media and timed on arrival in the capture) plus the engine's own buffer and USB queue.
-- **Android's floor on this phone is ~27 ms**, and only for apps that ask for low-latency audio. Ordinary media apps get Android's deep-buffer path (~170 ms inside the audio HAL) on every output, including the phone's own speaker.
-- Bridge mode is faster than Direct for ordinary media apps because the loopback takes tracks off the deep-buffer path. Its floor is set by Android's loopback device: 21 ms mixer period + a pipe that regulates to ~45-60 ms + 21 ms record period. None of that is tunable from outside.
+- Direct numbers are Android's own `AudioTrack` timestamps (the app shows the same measurement under Connection details).
+- Bridge numbers are click tests (a click played by a separate process and timed on arrival in the app's capture) plus the engine's ring buffer (18 ms) and USB queue (4 ms).
+- **Android's floor on this phone is ~25 ms**, and only for apps that ask for low-latency audio. Ordinary media apps get Android's deep-buffer path (~170 ms inside the audio HAL) on every output, including the phone's own speaker.
+- Android's own playback capture (MediaProjection) is the slowest road: it adds about 100 ms even for low-latency apps. It is taken before the media volume: a click written at 9000 arrived at 8999 with the phone's volume at 0, 8 and 15.
+- The helper's capture with the phone silent is faster, because the loopback takes tracks off the deep-buffer path, and it is taken after the media volume (about 13 dB down at volume 6 of 15). Its floor is set by Android's loopback device: 21 ms mixer period + a pipe that regulates to ~45-60 ms + 21 ms record period. None of that is tunable from outside.
 - 3-4 ms end to end isn't reachable from any phone: one USB audio hop plus the Move's own block size is already more than that.
 
 ## The Move's side

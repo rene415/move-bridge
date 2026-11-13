@@ -82,8 +82,8 @@
 
     <!-- The to-do row in Settings: shown only while the one-time setup needs something -->
     <string name="advanced_title">Advanced mode</string>
-    <string name="advanced_body">For tinkerers. Unlocks a lower-delay direct connection, which needs a one-time setup in Android\'s Developer options, and shows connection details. Off: nothing to set up.</string>
-    <string name="play_on_phone_basic">Your phone always plays along. Advanced mode can send to the Move only.</string>
+    <string name="advanced_body">For tinkerers. A direct connection with far less delay: on our test phone, instrument and game apps drop from about 130 ms to about 25 ms. Needs a one-time setup in Android\'s Developer options.</string>
+    <string name="play_on_phone_basic">Off: Move Bridge turns the phone\'s own volume to zero while sending, so only the Move plays. The Move gets the full level either way.</string>
     <string name="setup_row_title">Finish the one-time setup</string>
     <string name="setup_row_body">It lets Android play straight to your Move: the least delay and no screen-sharing prompt. Tap for the guide (about two minutes).</string>
     <string name="setup_row_wd_title">Turn Wireless debugging on once</string>
@@ -91,7 +91,7 @@
     <string name="auto_restart_title">Start automatically</string>
     <string name="auto_restart_body">After a phone restart, Move Bridge briefly turns Wireless debugging on to start its helper again, then off. Needs Wi-Fi.</string>
     <string name="play_on_phone_title">Also play on phone</string>
-    <string name="play_on_phone_body">The phone\'s speaker plays too, together with the Move. The phone\'s volume then sets the level for both. Changes right away.</string>
+    <string name="play_on_phone_body">On: phone and Move play together, and the phone\'s volume sets the level for both. Off: only the Move plays.</string>
     <string name="err_dev_options_title">Turn on Developer options first</string>
     <string name="err_dev_options_detail">Settings → About phone → Software information → tap Build number 7 times. Then come back to Move Bridge.</string>
 
@@ -125,7 +125,6 @@
     <string name="svc_stream_detail">Play anything on your phone. On the Move: Sampling → USB-C, then hold a pad.</string>
     <string name="notif_stop_sending">Stop sending audio</string>
     <string name="notif_stop_tone">Stop test tone</string>
-    <string name="svc_volume_tip">Tip: turn the phone\'s media volume all the way up. The Move records at the phone\'s volume.</string>
     <string name="svc_notif_tone">Playing test tone to Move</string>
     <string name="svc_notif_stream">Sending phone audio to Move</string>
     <string name="svc_armed_title">Ready — plug in your Move</string>
@@ -142,7 +141,7 @@
 
     <!-- Setup guide -->
     <string name="setup_title">Play straight to the Move</string>
-    <string name="setup_body">This one-time setup, about two minutes, lets Android play straight to your Move: the least delay, no capture prompt, and nothing to tap when you plug in.</string>
+    <string name="setup_body">This one-time setup, about two minutes, lets Android play straight to your Move. On our test phone the delay for instrument and game apps drops from about 130 ms to about 25 ms, there is no capture prompt, and nothing to tap when you plug in.</string>
     <string name="setup_steps_label">One-time setup</string>
     <string name="setup_step_1">Turn on Developer options</string>
     <string name="setup_step_2">Turn on Wireless debugging</string>
@@ -163,7 +162,7 @@
 
     <!-- What's new (rewritten for each release) -->
     <string name="whats_new_title">What\'s new in %1$s</string>
-    <string name="whats_new_body">• A simpler app. Sending needs no setup: plug in, tap Start, approve Android\'s prompt.\n\n• Everything technical now sits behind one Advanced mode switch in Settings: the lower-delay direct connection with its one-time setup, and the connection details. If your phone was already set up, Advanced mode stays on.\n\n• The steps on the Move follow Ableton\'s manual, with a tip about monitoring.\n\n• Open-source licenses are listed at the bottom of the main screen.</string>
+    <string name="whats_new_body">• Also play on phone is now a real switch for everyone. Off: only the Move plays, at full level.\n\n• The Move now gets the full level whatever the phone\'s volume is.\n\n• We measured what Advanced mode gains: on our test phone, instrument and game apps go from about 130 ms of delay to about 25 ms, and music and video apps start about 95 ms sooner. The numbers are on the project page.</string>
     <string name="got_it">Got it</string>
 
     <!-- Beta card on the main screen -->
