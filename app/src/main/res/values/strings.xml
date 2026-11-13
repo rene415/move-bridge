@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Move Bridge</string>
+    <string name="tagline">Android audio, sampled on Ableton Move</string>
+
+    <!-- Android-only note -->
+    <string name="android_only_label">For Android phones</string>
+    <string name="android_only_body">iPhones already send audio to Move over USB-C. Most Android phones only show Move as a MIDI controller. Move Bridge gives Android the same ability, so anything playing on your phone can be sampled on Move.</string>
+
+    <!-- Status labels -->
+    <string name="phase_idle">Not connected</string>
+    <string name="phase_armed">Ready</string>
+    <string name="phase_live">Live</string>
+    <string name="phase_tone">Test tone</string>
+    <string name="phase_error">Needs attention</string>
+
+    <string name="state_idle_title">Plug in your Move</string>
+    <string name="state_idle_detail">Connect with a USB-C data cable</string>
+    <string name="state_connecting">Connecting to Move…</string>
+    <string name="phase_plugged">Not sending</string>
+    <string name="state_plugged_title">Move is connected</string>
+    <string name="state_plugged_detail">Tap Start sending audio.</string>
+
+    <!-- Buttons -->
+    <string name="btn_start">Start sending audio</string>
+    <string name="btn_stop">Stop</string>
+    <string name="btn_stop_ready">Stop being ready</string>
+    <string name="btn_get_ready">Get ready</string>
+    <string name="btn_tone">Play test tone</string>
+    <string name="level">Level</string>
+
+    <!-- On the Move -->
+    <string name="on_the_move">On the Move</string>
+    <string name="step_1">Press Sampling</string>
+    <string name="step_2">Press the wheel until it shows USB-C</string>
+    <string name="step_3">Play audio on your phone</string>
+    <string name="step_4">Press a pad to record, press it again to stop</string>
+    <string name="step_tip">To hear the phone through the Move while sampling, turn monitoring on: select the headphones icon on the Move\'s screen and press the wheel.</string>
+    <string name="link_manual">Sampling in Ableton\'s Move manual</string>
+
+    <!-- Settings -->
+    <string name="settings">Settings</string>
+    <string name="auto_start_title">Start when Move connects</string>
+    <string name="auto_start_body">Plug in and audio starts. No screens in between.</string>
+    <string name="stay_ready_title">Stay ready in background</string>
+    <string name="stay_ready_body">For the screen-share method: approve once per phone restart. Android shows its capture icon while ready.</string>
+
+    <string name="details_closed">Connection details  ▾</string>
+    <string name="details_open">Connection details  ▴</string>
+    <string name="no_connection">No active connection.</string>
+
+    <string name="trademark">Ableton and Move are trademarks of Ableton AG. Move Bridge is an independent app and is not affiliated with, sponsored by or endorsed by Ableton.</string>
+
+    <!-- First-run intro -->
+    <string name="intro_title">One permission. Audio only.</string>
+    <string name="intro_body">To send your phone\'s sound to the Move, Android needs its capture permission. Android calls this “sharing your screen”. Move Bridge never records or sends your screen: it only takes the audio and sends it straight to the Move over the cable.</string>
+    <string name="intro_next">On the next screen, tap Start.</string>
+    <string name="intro_continue">Continue</string>
+
+    <!-- Errors shown by the app screen -->
+    <string name="err_usb_denied_title">USB access was denied</string>
+    <string name="err_usb_denied_detail">Tap Start again and allow Move Bridge to use the Move.</string>
+    <string name="err_not_found_title">Move not found</string>
+    <string name="err_not_found_detail">Plug the Move into your phone with a USB-C data cable.</string>
+    <string name="err_allow_audio_title">Allow audio access</string>
+    <string name="err_allow_audio_detail">Move Bridge needs it to pick up your phone\'s sound.</string>
+    <string name="err_not_started_title">Not started</string>
+    <string name="err_not_started_detail">Audio capture wasn\'t allowed, so nothing is being sent.</string>
+    <string name="toast_not_allowed">Move Bridge: audio capture wasn\'t allowed, so nothing is being sent.</string>
+
+    <!-- Service -->
+    <string name="svc_capture_not_ready">Capture isn\'t ready. Open Move Bridge and tap Start.</string>
+    <string name="svc_not_granted">Audio permission was not granted</string>
+    <string name="svc_capture_failed">Couldn\'t start audio capture</string>
+    <string name="svc_capture_stopped">Phone audio capture stopped</string>
+    <string name="svc_open_failed">Couldn\'t open the Move. Unplug it and plug it back in.</string>
+    <string name="svc_rejected">The Move didn\'t accept the audio stream</string>
+    <string name="svc_not_high_speed">The USB link is too slow for audio</string>
+    <string name="svc_not_high_speed_detail">Use a USB-C data cable plugged straight into the phone, with no hub or adapter.</string>
+    <string name="svc_shell_failed">Audio-only mode couldn\'t start</string>
+    <string name="svc_shell_failed_detail">Turn on Wireless debugging (or Start automatically), or turn off Audio-only mode in Move Bridge.</string>
+
+    <!-- Audio-only mode -->
+    <string name="audio_only_title">Audio-only mode</string>
+    <string name="audio_only_off">Work without Android\'s screen sharing: no prompt, no capture icon, notifications stay visible. Also lets Android play straight to the Move (Direct). One-time setup.</string>
+    <string name="audio_only_not_set_up">Not set up yet. Tap here for the setup guide (about two minutes, once).</string>
+    <string name="audio_only_needs_wd">Off since the last restart. Tap to turn on Wireless debugging, or turn on Start automatically below.</string>
+    <string name="audio_only_can_start">Ready. Starts by itself when you plug in the Move.</string>
+    <string name="audio_only_running">On. No screen-share prompt, no capture icon, and notifications stay visible.</string>
+    <string name="audio_only_unsupported">Needs Android 13 or newer.</string>
+    <string name="direct_title">Direct to Move</string>
+    <string name="direct_body">Android plays straight to the Move, like USB-C headphones. Least delay, the phone\'s volume buttons set the level, and the Move\'s MIDI keeps working. Off: Move Bridge captures the sound and sends it itself.</string>
+    <string name="auto_restart_title">Start automatically</string>
+    <string name="auto_restart_body">After a phone restart, Move Bridge briefly turns Wireless debugging on to restart audio-only mode, then off again. Needs Wi-Fi.</string>
+    <string name="play_on_phone_title">Also play on phone</string>
+    <string name="play_on_phone_body">The phone\'s speaker plays too. With Direct to Move, both play together and the phone\'s volume sets the level for both. Changes right away.</string>
+    <string name="err_dev_options_title">Turn on Developer options first</string>
+    <string name="err_dev_options_detail">Settings → About phone → Software information → tap Build number 7 times. Then tap Audio-only mode again.</string>
+
+    <!-- Pairing notification -->
+    <string name="setup_channel">Setup</string>
+    <string name="pair_waiting_title">Move Bridge: waiting for pairing</string>
+    <string name="pair_waiting_body">In Wireless debugging, turn it on, then tap Pair device with pairing code. Keep that screen open.</string>
+    <string name="pair_found_title">Move Bridge: enter the pairing code</string>
+    <string name="pair_found_body">Tap Enter code and type the 6-digit code shown on the pairing screen.</string>
+    <string name="pair_enter_code">Enter code</string>
+    <string name="pair_code_label">6-digit pairing code</string>
+    <string name="pair_working">Move Bridge: pairing…</string>
+    <string name="pair_failed_title">Move Bridge: pairing didn\'t work</string>
+    <string name="pair_failed_body">Check the code and try again. If the pairing screen closed, open it again; a new code is shown.</string>
+    <string name="pair_starting">Move Bridge: paired. Starting audio-only mode…</string>
+    <string name="pair_done_title">Move Bridge: audio-only mode is ready</string>
+    <string name="pair_done_body">You can leave Wireless debugging. Plug in the Move and play something.</string>
+    <string name="pair_start_failed">Move Bridge: paired, but audio-only mode didn\'t start</string>
+    <string name="svc_stream_stopped">Connection to the Move stopped</string>
+    <string name="svc_tone_title">Playing test tone</string>
+    <string name="svc_tone_detail">440 Hz beep. On the Move, set Sampling input to USB-C.</string>
+    <string name="svc_direct_title">Phone audio plays on the Move</string>
+    <string name="svc_direct_detail">The Move is now your phone\'s audio output, like USB-C headphones. The phone\'s volume buttons set the level. On the Move: Sampling → USB-C, then hold a pad.</string>
+    <string name="svc_notif_direct">Phone audio plays on the Move</string>
+    <string name="svc_tone_detail_direct">440 Hz tone through Android\'s own output. On the Move, set Sampling input to USB-C. Too quiet? Turn the phone\'s volume up.</string>
+    <string name="svc_direct_fallback">Direct mode wasn\'t available this time, so Move Bridge is sending the audio itself. To try Direct again, unplug the Move and plug it back in.</string>
+    <string name="direct_route_both">the Move and the phone\'s speaker</string>
+    <string name="direct_details">Direct: Android plays to the Move itself\nOutput: %1$s</string>
+    <string name="direct_details_delay">\nDelay measured on this phone:\nMusic and video apps: about %1$d ms to start (video stays in sync)\nInstrument and game apps: about %2$d ms</string>
+    <string name="svc_audio_only_off">Audio-only mode is off. Tap Start to send audio with screen sharing.</string>
+    <string name="svc_stream_title">Sending audio to Move</string>
+    <string name="svc_stream_detail">Play anything on your phone. On the Move: Sampling → USB-C, then hold a pad.</string>
+    <string name="notif_stop_sending">Stop sending audio</string>
+    <string name="notif_stop_tone">Stop test tone</string>
+    <string name="svc_volume_tip">Tip: turn the phone\'s media volume all the way up. The Move records at the phone\'s volume.</string>
+    <string name="svc_notif_tone">Playing test tone to Move</string>
+    <string name="svc_notif_stream">Sending phone audio to Move</string>
+    <string name="svc_armed_title">Ready — plug in your Move</string>
+    <string name="svc_armed_detail">Audio will start as soon as the Move connects.</string>
+
+    <!-- Mute notifications while sending -->
+    <string name="mute_title">Mute notifications while sending</string>
+    <string name="mute_body">Puts the phone on vibrate while audio goes to the Move, so rings and pings don\'t land in your samples. Alarms still sound.</string>
+
+    <!-- Quick Settings tile -->
+    <string name="tile_sending">Sending audio</string>
+    <string name="tile_ready">Tap to send audio</string>
+    <string name="tile_no_move">Move not plugged in</string>
+
+    <!-- Setup guide -->
+    <string name="setup_title">Set up Move Bridge</string>
+    <string name="setup_body">A one-time setup, about two minutes, lets Android play straight to your Move: the least delay, no screen-sharing prompt, and nothing to tap when you plug in.</string>
+    <string name="setup_steps_label">One-time setup</string>
+    <string name="setup_step_1">Turn on Developer options</string>
+    <string name="setup_step_2">Turn on Wireless debugging</string>
+    <string name="setup_step_3">Pair Move Bridge with a code</string>
+    <string name="setup_step_4">Move Bridge starts its helper</string>
+    <string name="setup_hint_1">In About phone, open Software information and tap Build number 7 times. Then come back here.</string>
+    <string name="setup_hint_2">In Developer options, turn on Wireless debugging (the phone must be on Wi-Fi) and tap Allow. Then open Wireless debugging and tap Pair device with pairing code. Keep that screen open, pull down your notifications, and type the 6-digit code into the Move Bridge notification.</string>
+    <string name="setup_hint_3">Open Wireless debugging and tap Pair device with pairing code. Keep that screen open, pull down your notifications, and type the 6-digit code into the Move Bridge notification.</string>
+    <string name="setup_hint_4">Paired. Tap Start now. If it doesn\'t start, turn Wireless debugging on once more.</string>
+    <string name="setup_hint_done">All set. Plug in your Move and play something.</string>
+    <string name="setup_btn_about">Open About phone</string>
+    <string name="setup_btn_wireless">Open Developer options</string>
+    <string name="setup_btn_start">Start now</string>
+    <string name="setup_btn_done">Done</string>
+    <string name="setup_skip">Not now: use screen sharing instead</string>
+    <string name="setup_why_label">Why Developer options?</string>
+    <string name="setup_why_body">Android only lets its own debugging service start the small helper that Move Bridge needs to route audio. Move Bridge connects only to this phone itself, never to another device, and you can turn Wireless debugging off again afterwards.</string>
+
+    <!-- What's new (rewritten for each release) -->
+    <string name="whats_new_title">What\'s new in %1$s</string>
+    <string name="whats_new_body">• Direct to Move: Android plays straight to the Move, like USB-C headphones. Less delay, and the Move\'s MIDI keeps working.\n\n• Also play on phone now works with Direct to Move: phone and Move play together.\n\n• Mute notifications while sending: no pings in your samples.\n\n• Quick Settings tile: start and stop from the pull-down panel.\n\n• With Start automatically on, Move Bridge is ready again by itself after a phone restart.\n\n• A setup guide for the one-time setup.\n\n• Send feedback: tell us what works and what doesn\'t. Nothing is sent unless you send it.</string>
+    <string name="got_it">Got it</string>
+
+    <!-- Beta card on the main screen -->
+    <string name="beta_label">Beta</string>
+    <string name="beta_body">Move Bridge is in beta. Tell us what works and what doesn\'t: that decides what gets fixed next. Nothing is sent unless you send it.</string>
+    <string name="beta_feedback">Send feedback</string>
+    <string name="link_whats_new">What\'s new</string>
+    <string name="link_setup">Setup guide</string>
+    <string name="link_tile">Add quick tile</string>
+    <string name="link_licenses">Open-source licenses</string>
+
+    <!-- Feedback screen -->
+    <string name="feedback_title">Send feedback</string>
+    <string name="feedback_intro">What works, what doesn\'t, what\'s missing: every note helps make Move Bridge better for Move owners.</string>
+    <string name="privacy_label">Your data stays yours</string>
+    <string name="privacy_body">Move Bridge has no accounts, no ads and no tracking, and it never sends anything by itself. A report only leaves your phone when you send it from this screen, and you can read every line of it first. Reports are used to fix and improve Move Bridge, and for nothing else.</string>
+    <string name="feedback_kind_label">What is it about?</string>
+    <string-array name="feedback_kinds">
+        <item>It works well</item>
+        <item>No sound on the Move</item>
+        <item>The sound is late</item>
+        <item>Crackles or dropouts</item>
+        <item>Setup was confusing</item>
+        <item>The app closed or froze</item>
+        <item>An idea or a request</item>
+    </string-array>
+    <!-- One question per kind above, shown as the hint of the text box. -->
+    <string-array name="feedback_hints">
+        <item>Good to hear! What do you use it for, and from which app?</item>
+        <item>Which app were you playing from? Does the test tone reach the Move?</item>
+        <item>Which app? About how late: a blink, half a second, more?</item>
+        <item>Which app? All the time, or now and then? Does the test tone crackle too?</item>
+        <item>Which step were you on? What did you expect to see?</item>
+        <item>What were you doing right before it happened?</item>
+        <item>What would make Move Bridge more useful for you?</item>
+    </string-array>
+    <string name="feedback_note_label">Tell us more</string>
+    <string name="feedback_details">Include technical details</string>
+    <string name="feedback_details_body">App and Android version, phone model, Move Bridge\'s settings and its own recent log. No names, accounts, serial numbers, network details or audio.</string>
+    <string name="feedback_preview">See exactly what is included  ▾</string>
+    <string name="feedback_send">Send…</string>
+    <string name="feedback_github">Open a GitHub issue</string>
+    <string name="feedback_copy">Copy to clipboard</string>
+    <string name="feedback_copied">Copied</string>
+    <string name="feedback_no_browser">Couldn\'t open a browser</string>
+    <string name="feedback_subject">Move Bridge feedback: %1$s</string>
+
+    <!-- After a crash -->
+    <string name="crash_title">Move Bridge closed unexpectedly</string>
+    <string name="crash_body">Sorry about that. A short crash report was saved on your phone. Want to look at it and send it? It helps fix the problem, and nothing is sent unless you send it.</string>
+    <string name="crash_review">Review and send</string>
+    <string name="crash_dismiss">Delete it</string>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!-- Library code, not ours:
+         - libadb-android: ADB's TLS doesn't use certificate authorities. adbd's certificate is
+           self-signed; trust comes from the Wireless debugging pairing code (SPAKE2). We only
+           connect to this phone's own adbd, found by mDNS, and only send it the helper start command.
+         - BouncyCastle (bcpkix): we only use it to create our own self-signed certificate; its
+           network trust managers are never used. -->
+    <issue id="TrustAllX509TrustManager">
+        <ignore path="**/libadb-android-*/**" />
+        <ignore path="**/bcpkix-jdk15to18-*" />
+    </issue>
+</lint>

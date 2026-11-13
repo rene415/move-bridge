@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Ableton Move: VID 0x2982, PID 0x1958 -->
+    <usb-device vendor-id="10626" product-id="6488" />
+</resources>

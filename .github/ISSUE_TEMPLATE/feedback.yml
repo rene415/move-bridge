@@ -1,0 +1,32 @@
+name: Feedback or an idea
+description: It works on your phone, something could be better, or a feature you'd like
+labels: [feedback]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Reports that it **works** are as useful as bug reports: they tell us which phones are fine.
+        Please don't include anything private: issues are public.
+  - type: input
+    id: phone
+    attributes:
+      label: Phone and Android version
+      placeholder: for example Galaxy S24, Android 15
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Which mode do you use?
+      options:
+        - Direct to Move
+        - Audio-only mode with Direct off
+        - Screen sharing (no setup)
+        - Not sure
+  - type: textarea
+    id: use
+    attributes:
+      label: What do you use Move Bridge for?
+      description: Which apps do you sample from? What does a typical session look like?
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would make it more useful?

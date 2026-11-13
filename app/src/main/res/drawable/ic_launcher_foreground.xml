@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Sound wave flowing into a 2x2 grid of Move-style pads. Kept inside the 66dp safe zone. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- waveform bars -->
+    <path android:pathData="M31,50V58" android:strokeColor="#FFFFFFFF" android:strokeWidth="3.2" android:strokeLineCap="round" />
+    <path android:pathData="M36,45V63" android:strokeColor="#FFFFFFFF" android:strokeWidth="3.2" android:strokeLineCap="round" />
+    <path android:pathData="M41,41V67" android:strokeColor="#FFFFFFFF" android:strokeWidth="3.2" android:strokeLineCap="round" />
+    <path android:pathData="M46,47V61" android:strokeColor="#FFFFFFFF" android:strokeWidth="3.2" android:strokeLineCap="round" />
+    <!-- pads -->
+    <path android:fillColor="#FFB8E35A"
+        android:pathData="M54.5,41h7a2.5,2.5 0 0 1 2.5,2.5v7a2.5,2.5 0 0 1 -2.5,2.5h-7a2.5,2.5 0 0 1 -2.5,-2.5v-7a2.5,2.5 0 0 1 2.5,-2.5z" />
+    <path android:fillColor="#FFFF9F43"
+        android:pathData="M68.5,41h7a2.5,2.5 0 0 1 2.5,2.5v7a2.5,2.5 0 0 1 -2.5,2.5h-7a2.5,2.5 0 0 1 -2.5,-2.5v-7a2.5,2.5 0 0 1 2.5,-2.5z" />
+    <path android:fillColor="#FF4FC3F7"
+        android:pathData="M54.5,55h7a2.5,2.5 0 0 1 2.5,2.5v7a2.5,2.5 0 0 1 -2.5,2.5h-7a2.5,2.5 0 0 1 -2.5,-2.5v-7a2.5,2.5 0 0 1 2.5,-2.5z" />
+    <path android:fillColor="#FFF06292"
+        android:pathData="M68.5,55h7a2.5,2.5 0 0 1 2.5,2.5v7a2.5,2.5 0 0 1 -2.5,2.5h-7a2.5,2.5 0 0 1 -2.5,-2.5v-7a2.5,2.5 0 0 1 2.5,-2.5z" />
+</vector>

@@ -1,0 +1,14 @@
+Move Bridge
+Copyright 2026 The Move Bridge authors
+
+Licensed under the Apache License, Version 2.0. See the LICENSE file.
+
+Ableton and Move are trademarks of Ableton AG. Move Bridge is an independent
+project and is not affiliated with, sponsored by or endorsed by Ableton.
+
+This product includes third-party software; see THIRD_PARTY_NOTICES.md:
+- libusb (LGPL-2.1-or-later)
+- libadb-android (used under Apache-2.0)
+- Conscrypt (Apache-2.0)
+- Bouncy Castle (Bouncy Castle License)
+- parts adapted from scrcpy (Apache-2.0), copyright Genymobile and Romain Vimont

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One-time setup guide (SetupActivity): four steps that tick themselves off, one button that
+     always does the next thing, and a way to skip. -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:fitsSystemWindows="true"
+    android:paddingBottom="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="28dp">
+
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@drawable/bg_icon"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher_foreground" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/setup_title"
+            android:textColor="@color/text"
+            android:textSize="26sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:lineSpacingExtra="3dp"
+            android:text="@string/setup_body"
+            android:textColor="@color/text_dim"
+            android:textSize="15sp" />
+
+        <LinearLayout style="@style/Card">
+
+            <TextView
+                style="@style/Label"
+                android:text="@string/setup_steps_label" />
+
+            <LinearLayout
+                android:id="@+id/setupSteps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:orientation="vertical" />
+
+            <TextView
+                android:id="@+id/setupHint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:lineSpacingExtra="2dp"
+                android:textColor="@color/accent_text"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/setupNext"
+                style="@style/PrimaryButton"
+                android:layout_marginTop="16dp" />
+
+            <Button
+                android:id="@+id/setupSkip"
+                style="@style/SecondaryButton"
+                android:layout_marginTop="8dp"
+                android:text="@string/setup_skip" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_note"
+            android:orientation="vertical"
+            android:paddingVertical="12dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="12dp">
+
+            <TextView
+                style="@style/Label"
+                android:text="@string/setup_why_label"
+                android:textColor="@color/accent_text" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:lineSpacingExtra="2dp"
+                android:text="@string/setup_why_body"
+                android:textColor="@color/text_dim"
+                android:textSize="13sp" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

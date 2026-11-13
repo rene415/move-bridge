@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Collapsed notification body (RemoteViews). A collapsed notification has room for about one
+     line (48dp on stock Android, a little more on Samsung), so the labeled Stop button is the
+     whole body; the status line is in the expanded layout (notif_bridge.xml). -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/notifStop"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/bg_notif_stop"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:paddingHorizontal="12dp"
+        android:textColor="@color/on_accent"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+</FrameLayout>

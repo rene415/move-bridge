@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Session theme, dark mode: flat charcoal panels, one orange accent (Live-style). -->
+<resources>
+    <color name="bg">#FF181818</color>
+    <color name="surface">#FF242424</color>
+    <color name="surface_hi">#FF323232</color>
+    <color name="outline">#FF3C3C3C</color>
+    <color name="text">#FFE8E8E8</color>
+    <color name="text_dim">#FFA3A3A3</color>
+    <color name="text_faint">#FF6F6F6F</color>
+    <color name="ripple">#22FFFFFF</color>
+
+    <color name="accent">#FFFF8A3D</color>
+    <color name="on_accent">#FF1A1A1A</color>
+    <color name="accent_text">#FFFF8A3D</color>
+
+    <color name="armed">#FF5AB0FF</color>
+    <color name="tone">#FFFFD24A</color>
+    <color name="error">#FFFF5C5C</color>
+    <color name="thumb_on">#FFFFFFFF</color>
+</resources>

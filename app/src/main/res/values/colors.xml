@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Session theme, light mode: flat light-gray panels, one orange accent (Live-style). -->
+<resources>
+    <color name="bg">#FFE3E3E3</color>
+    <color name="surface">#FFF1F1F1</color>
+    <color name="surface_hi">#FFD6D6D6</color>
+    <color name="outline">#FFBDBDBD</color>
+    <color name="text">#FF161616</color>
+    <color name="text_dim">#FF545454</color>
+    <color name="text_faint">#FF7E7E7E</color>
+    <color name="ripple">#22000000</color>
+
+    <!-- Accent: whatever is active / sending. -->
+    <color name="accent">#FFF07A2B</color>
+    <color name="on_accent">#FF1A1A1A</color>
+    <!-- Accent used as text: darker so small text passes 4.5:1 contrast on light gray. -->
+    <color name="accent_text">#FFAD4A10</color>
+
+    <!-- Status colors -->
+    <color name="armed">#FF2F7FD8</color>
+    <color name="tone">#FFC99200</color>
+    <color name="error">#FFD13B3B</color>
+    <color name="thumb_on">#FFFFFFFF</color>
+</resources>

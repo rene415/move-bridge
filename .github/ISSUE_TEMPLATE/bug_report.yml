@@ -1,0 +1,57 @@
+name: Something isn't working
+description: No sound, late sound, crackles, a crash, or setup trouble
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time. The easiest way to report is from the app: **Send feedback** fills in the technical details for you.
+        Please don't include anything private: issues are public.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What is it about?
+      options:
+        - No sound on the Move
+        - The sound is late
+        - Crackles or dropouts
+        - Setup was confusing or failed
+        - The app closed or froze
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Which app were you playing from?
+      placeholder: for example YouTube, Spotify, a sample library, a synth app
+  - type: dropdown
+    id: tone
+    attributes:
+      label: Does the test tone reach the Move?
+      description: In Move Bridge, tap "Play test tone". On the Move, Sampling input must be USB-C.
+      options:
+        - "Yes, clean"
+        - "Yes, but it crackles"
+        - "No"
+        - I haven't tried
+  - type: input
+    id: phone
+    attributes:
+      label: Phone and Android version
+      placeholder: for example Pixel 9, Android 16
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Technical details from the app
+      description: In Move Bridge, tap Send feedback → Copy to clipboard, and paste here.
+      render: text
