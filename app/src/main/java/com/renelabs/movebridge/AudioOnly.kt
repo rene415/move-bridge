@@ -12,8 +12,10 @@ import com.renelabs.movebridge.shell.IShellCapture
  * plays straight to the Move (Direct mode), or, if that fails, the helper captures the audio and
  * the app sends it (Bridge mode).
  *
- * This is not a setting. Once the one-time setup is done, the helper is always used when it runs
- * or can be started; when it can't, the app falls back to Android's screen-share capture by itself.
+ * The helper belongs to Advanced mode ([Prefs.advanced]): regular users never meet it, and the app
+ * then sends through Android's screen-share capture. With Advanced on and the one-time setup done,
+ * the helper is always used when it runs or can be started; when it can't, the app falls back to
+ * screen-share capture by itself.
  * The helper comes from, in order:
  *  1. Move Bridge's own helper, already running (started earlier through Wireless debugging)
  *  2. Move Bridge's own helper, started now through Wireless debugging (on, or switched on by us)
@@ -44,7 +46,7 @@ object AudioOnly {
     }
 
     /** A plug-in can use the helper now (possibly after starting it). Otherwise: screen-share capture. */
-    fun usable(c: Context): Boolean = when (status(c)) {
+    fun usable(c: Context): Boolean = Prefs.advanced(c) && when (status(c)) {
         Status.RUNNING -> true
         Status.CAN_START -> !startFailed
         else -> false
@@ -104,7 +106,7 @@ object AudioOnly {
      */
     fun warmUp(c: Context) {
         val app = c.applicationContext
-        if (starting || status(app) != Status.CAN_START) return
+        if (starting || !Prefs.advanced(app) || status(app) != Status.CAN_START) return
         starting = true
         // A helper that's already running hands over its binder within a second of our process
         // starting; wait for that before starting a new one.
@@ -122,7 +124,7 @@ object AudioOnly {
      * Binder. Waits for that, then reports [usable].
      */
     fun whenKnown(c: Context, done: (Boolean) -> Unit) {
-        if (Build.VERSION.SDK_INT < 33 || !Prefs.adbPaired(c)) return done(false)
+        if (Build.VERSION.SDK_INT < 33 || !Prefs.advanced(c) || !Prefs.adbPaired(c)) return done(false)
         if (ShellLink.alive()) return done(true)
         ShellLink.await(BINDER_WAIT_MS) { done(usable(c)) }
     }

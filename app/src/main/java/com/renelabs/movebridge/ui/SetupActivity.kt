@@ -21,9 +21,9 @@ import com.renelabs.movebridge.adb.Pairing
 import com.renelabs.movebridge.adb.ShellStarter
 
 /**
- * The guide for the one-time setup (it gives Move Bridge its helper, which Direct mode needs). It shows the four
+ * Advanced mode's guide for the one-time setup (it gives Move Bridge its helper, which Direct mode needs). It shows the four
  * steps, ticks them off as the phone's state changes, and its button always does the next thing.
- * Skipping is fine: the app then uses Android's screen-share permission instead.
+ * Skipping is fine: the app keeps sending the basic way until it is done.
  */
 class SetupActivity : Activity() {
     private val main = Handler(Looper.getMainLooper())

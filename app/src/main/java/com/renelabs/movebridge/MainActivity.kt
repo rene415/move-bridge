@@ -75,9 +75,10 @@ class MainActivity : Activity() {
             restore(savedInstanceState)
             return
         }
-        // A plug-in start asks for what it needs itself, and so does the setup guide on a first
-        // start; otherwise ask up front.
-        if (!handleConnect(intent) && !Welcome.onAppOpened(this)) requestMissingPermissions()
+        // A plug-in start asks for what it needs itself; otherwise ask up front.
+        if (handleConnect(intent)) return
+        requestMissingPermissions()
+        Welcome.onAppOpened(this)
     }
 
     override fun onNewIntent(intent: Intent) {

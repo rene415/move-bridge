@@ -13,6 +13,7 @@ object Prefs {
     private const val PLAY_ON_PHONE = "playOnPhone"
     private const val SAVED_VOLUME = "savedVolume"
     private const val MUTE = "muteWhileSending"
+    private const val ADVANCED = "advanced"
     private const val RINGER_CHANGED = "ringerChanged"
     private const val SEEN_VERSION = "seenVersion"
     private const val HOME_WIFI = "homeWifi"
@@ -26,6 +27,15 @@ object Prefs {
     /** Keep the capture permission open between plug-ins (until restart). Default off. */
     fun stayArmed(c: Context) = sp(c).getBoolean(STAY_ARMED, false)
     fun setStayArmed(c: Context, v: Boolean) = sp(c).edit().putBoolean(STAY_ARMED, v).apply()
+
+    /**
+     * Advanced mode: everything that needs Android's Developer options (the helper, and with it
+     * Direct mode) plus the technical details. Off, the app is plain: nothing to set up, sending
+     * through Android's own capture prompt. Default off; it stays on for an install whose setup
+     * was done before this switch existed.
+     */
+    fun advanced(c: Context) = sp(c).getBoolean(ADVANCED, adbPaired(c))
+    fun setAdvanced(c: Context, v: Boolean) = sp(c).edit().putBoolean(ADVANCED, v).apply()
 
     /** Paired with this phone's Wireless debugging: the one-time setup is done. */
     fun adbPaired(c: Context) = sp(c).getBoolean(ADB_PAIRED, false)

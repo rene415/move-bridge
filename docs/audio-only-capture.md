@@ -8,7 +8,7 @@
   - Android 15+ screen-share protections: notification content is hidden, and windows with passwords or other sensitive content are blanked
 - The protections key off MediaProjection itself. Move Bridge never creates a virtual display, but the system can't tell that apart from a real screen recording.
 
-Move Bridge still supports this path (Bridge mode without setup), because it works on any Android 10+ phone with no preparation.
+This is what Move Bridge uses for regular users (basic sending), because it works on any Android 10+ phone with no preparation. Everything below belongs to Advanced mode.
 
 ## The helper
 Android's audio system can do much more for a caller that holds `MODIFY_AUDIO_ROUTING`. Normal apps can't get that permission, but the **shell** user (`com.android.shell`, what `adb shell` runs as) has it. So Move Bridge starts a small helper process as the shell user:

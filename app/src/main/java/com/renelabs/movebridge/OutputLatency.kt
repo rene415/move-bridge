@@ -20,7 +20,7 @@ object OutputLatency {
      * [firstMs]: from an app's first write() to that audio coming out (tap-to-hear delay).
      * [steadyMs]: how far behind write() the output runs once the app's buffer is full.
      */
-    data class Result(val route: String, val routeType: Int, val firstMs: Long, val steadyMs: Long, val bufferMs: Int)
+    data class Result(val route: String, val firstMs: Long, val steadyMs: Long, val bufferMs: Int)
 
     /** Null when the route gives no timestamps. [lowLatency]: measure like an instrument app or game. */
     fun measure(lowLatency: Boolean): Result? {
@@ -34,8 +34,7 @@ object OutputLatency {
             if (!track.getTimestamp(ts)) return null
             val presented = ts.framePosition + (System.nanoTime() - ts.nanoTime) * rate / 1_000_000_000L
             val firstFrameAt = ts.nanoTime - ts.framePosition * 1_000_000_000L / rate
-            val route = track.routedDevice
-            return Result(route?.productName?.toString() ?: "unknown", route?.type ?: 0,
+            return Result(track.routedDevice?.productName?.toString() ?: "unknown",
                 (firstFrameAt - t0) / 1_000_000, (written - presented) * 1000 / rate,
                 track.bufferSizeInFrames * 1000 / rate)
         } finally {

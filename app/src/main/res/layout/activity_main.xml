@@ -209,7 +209,7 @@
                     android:layout_marginBottom="4dp"
                     android:text="@string/settings" />
 
-                <!-- A to-do, not a setting: shown only while the one-time setup needs something. -->
+                <!-- Advanced mode's to-do, not a setting: shown only while the one-time setup needs something. -->
                 <include
                     android:id="@+id/rowSetup"
                     layout="@layout/setting_row" />
@@ -222,7 +222,7 @@
                     android:id="@+id/rowMute"
                     layout="@layout/setting_row" />
 
-                <!-- Shown once the one-time setup is done. -->
+
                 <include
                     android:id="@+id/rowPlayOnPhone"
                     layout="@layout/setting_row" />
@@ -231,9 +231,14 @@
                     android:id="@+id/rowAutoRestart"
                     layout="@layout/setting_row" />
 
-                <!-- Screen-share capture only: shown while the one-time setup isn't done. -->
+                <!-- Basic sending only (Android's own capture). -->
                 <include
                     android:id="@+id/rowArmed"
+                    layout="@layout/setting_row" />
+
+                <!-- The one switch that reveals everything technical. -->
+                <include
+                    android:id="@+id/rowAdvanced"
                     layout="@layout/setting_row" />
             </LinearLayout>
 

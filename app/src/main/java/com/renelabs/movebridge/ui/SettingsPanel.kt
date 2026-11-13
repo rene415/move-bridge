@@ -15,16 +15,17 @@ import com.renelabs.movebridge.ShellLink
 import com.renelabs.movebridge.adb.Pairing
 
 /**
- * The Settings card:
- *   (Finish the one-time setup / Turn Wireless debugging on)   only while that needs doing; no switch
+ * The Settings card. A regular user sees:
  *   Start when Move connects
  *   Mute notifications while sending
- *   Also play on phone         (once the setup is done)
- *   Start automatically        (once the setup is done)
- *   Stay ready in background   (without the setup: only matters for screen-share capture)
- *
- * There is no switch for how audio gets to the Move. With the setup done, Android plays straight
- * to it; without, Move Bridge falls back to Android's screen-share capture by itself.
+ *   Also play on phone         (locked on: with basic sending the phone always plays along)
+ *   Stay ready in background
+ *   Advanced mode
+ * Advanced mode is the one switch that reveals everything technical:
+ *   a to-do line while the one-time setup needs something (no switch; tap it)
+ *   Also play on phone         (a real switch once the setup is done)
+ *   Start automatically        (once the setup is done; replaces Stay ready)
+ *   and, outside this card, the connection details and the setup guide link.
  * [onLocalError] shows a message on the status card (title, detail res ids).
  */
 class SettingsPanel(private val a: Activity, private val onLocalError: (Int, Int) -> Unit) {
@@ -36,6 +37,7 @@ class SettingsPanel(private val a: Activity, private val onLocalError: (Int, Int
         val detail: TextView = root.findViewById(R.id.rowDetail)
         val body: View = root.findViewById(R.id.rowBody)
         val divider: View = root.findViewById(R.id.rowDivider)
+        private var onChange: ((Boolean) -> Unit)? = null
 
         init {
             // Every row's switch has the same id (one shared layout), so Android's automatic view-state
@@ -43,12 +45,23 @@ class SettingsPanel(private val a: Activity, private val onLocalError: (Int, Int
             toggle.isSaveEnabled = false
             this.title.setText(title)
             this.detail.setText(detail)
+            toggle.setOnCheckedChangeListener { _, v -> onChange?.invoke(v) }
+            body.setOnClickListener { if (toggle.isEnabled) toggle.toggle() }
         }
 
         fun bind(initial: Boolean, onChange: (Boolean) -> Unit) {
-            toggle.isChecked = initial
-            toggle.setOnCheckedChangeListener { _, v -> onChange(v) }
-            body.setOnClickListener { toggle.toggle() }
+            show(initial)
+            this.onChange = onChange
+        }
+
+        /** Sets the switch from code, which must not count as the user changing it. */
+        fun show(checked: Boolean, enabled: Boolean = true) {
+            val listener = onChange
+            onChange = null
+            toggle.isChecked = checked
+            toggle.isEnabled = enabled
+            toggle.alpha = if (enabled) 1f else LOCKED_ALPHA  // a locked switch has to look locked
+            onChange = listener
         }
     }
 
@@ -58,6 +71,7 @@ class SettingsPanel(private val a: Activity, private val onLocalError: (Int, Int
     private val playOnPhone = Row(a.findViewById(R.id.rowPlayOnPhone), R.string.play_on_phone_title, R.string.play_on_phone_body)
     private val autoRestart = Row(a.findViewById(R.id.rowAutoRestart), R.string.auto_restart_title, R.string.auto_restart_body)
     private val stayReady = Row(a.findViewById(R.id.rowArmed), R.string.stay_ready_title, R.string.stay_ready_body)
+    private val advanced = Row(a.findViewById(R.id.rowAdvanced), R.string.advanced_title, R.string.advanced_body)
 
     init {
         bindSetupRow()
@@ -66,6 +80,7 @@ class SettingsPanel(private val a: Activity, private val onLocalError: (Int, Int
         playOnPhone.bind(Prefs.playOnPhone(a), ::onPlayOnPhone)
         autoRestart.bind(Prefs.autoRestart(a), ::onAutoRestart)
         stayReady.bind(Prefs.stayArmed(a), ::onStayReady)
+        advanced.bind(Prefs.advanced(a), ::onAdvanced)
     }
 
     /** Not a setting but a to-do: it has no switch, and tapping it opens what needs doing. */
@@ -76,6 +91,17 @@ class SettingsPanel(private val a: Activity, private val onLocalError: (Int, Int
         setup.body.setOnClickListener {
             if (AudioOnly.status(a) == Status.NEEDS_WIRELESS_DEBUGGING) openDeveloperSettings() else Welcome.openSetup(a)
         }
+    }
+
+    /**
+     * Switching Advanced mode changes how audio is sent, so whatever is running stops; the next
+     * start uses the new way. Switching it on for the first time opens the setup guide.
+     */
+    private fun onAdvanced(on: Boolean) {
+        Prefs.setAdvanced(a, on)
+        if (BridgeService.state.phase in setOf(Phase.STREAMING, Phase.TONE, Phase.ARMED)) sendToService(BridgeService.ACTION_STOP)
+        if (on && AudioOnly.status(a) == Status.NOT_SET_UP) Welcome.openSetup(a)
+        render()
     }
 
     /** Applies straight away while sending: on vibrate now, or back to normal. */
@@ -112,19 +138,33 @@ class SettingsPanel(private val a: Activity, private val onLocalError: (Int, Int
             .onFailure { onLocalError(R.string.err_dev_options_title, R.string.err_dev_options_detail) }
     }
 
-    /** Shows the rows that apply to the phone's current state. */
+    /** Shows what applies to the phone's current state, and nothing technical unless Advanced mode is on. */
     fun render() {
+        val advancedOn = Prefs.advanced(a)
         val status = AudioOnly.status(a)
-        val todo = status == Status.NOT_SET_UP || status == Status.NEEDS_WIRELESS_DEBUGGING
+        // The helper's options apply once Advanced mode is on and the setup has been done.
+        val helper = advancedOn && status != Status.NOT_SET_UP && status != Status.UNSUPPORTED
+        renderSetupRow(advancedOn, status)
+        // Without the helper, capture is Android's own, and that can't silence the phone.
+        playOnPhone.show(if (helper) Prefs.playOnPhone(a) else true, enabled = helper)
+        playOnPhone.detail.setText(if (helper) R.string.play_on_phone_body else R.string.play_on_phone_basic)
+        autoRestart.root.visibility = if (helper) View.VISIBLE else View.GONE
+        stayReady.root.visibility = if (helper) View.GONE else View.VISIBLE
+        for (id in ADVANCED_VIEWS) a.findViewById<View>(id).visibility = if (advancedOn) View.VISIBLE else View.GONE
+    }
+
+    private fun renderSetupRow(advancedOn: Boolean, status: Status) {
         val needsWireless = status == Status.NEEDS_WIRELESS_DEBUGGING
+        val todo = advancedOn && (status == Status.NOT_SET_UP || needsWireless)
         setup.root.visibility = if (todo) View.VISIBLE else View.GONE
         setup.title.setText(if (needsWireless) R.string.setup_row_wd_title else R.string.setup_row_title)
         setup.detail.setText(if (needsWireless) R.string.setup_row_wd_body else R.string.setup_row_body)
-        autoStart.divider.visibility = if (todo) View.VISIBLE else View.GONE  // first row otherwise
-        // Paired at some point: the helper's options apply. Otherwise it's screen-share capture.
-        val setUp = status != Status.NOT_SET_UP && status != Status.UNSUPPORTED
-        playOnPhone.root.visibility = if (setUp) View.VISIBLE else View.GONE
-        autoRestart.root.visibility = if (setUp) View.VISIBLE else View.GONE
-        stayReady.root.visibility = if (setUp) View.GONE else View.VISIBLE
+        autoStart.divider.visibility = if (todo) View.VISIBLE else View.GONE  // the first row otherwise
+    }
+
+    private companion object {
+        const val LOCKED_ALPHA = 0.4f
+        /** Parts of the main screen, outside this card, that only Advanced mode shows. */
+        val ADVANCED_VIEWS = intArrayOf(R.id.detailsCard, R.id.linkSetup)
     }
 }

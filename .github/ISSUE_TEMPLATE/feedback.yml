@@ -17,8 +17,8 @@ body:
     attributes:
       label: How do you use it?
       options:
-        - With the one-time setup done
-        - Without the setup (screen sharing)
+        - Regular (Advanced mode off)
+        - Advanced mode
         - Not sure
   - type: textarea
     id: use

@@ -49,12 +49,9 @@ object ShellAudio {
      * Starts capturing the phone's playback audio. Throws on failure.
      * [playOnPhone] true keeps the sound playing on the phone as well (ROUTE_FLAG_LOOP_BACK_RENDER);
      * false sends it only to the capture, like an iPhone plugged into the Move.
-     * [onlyUsage]: capture only this AudioAttributes usage (the latency test uses USAGE_GAME so
-     * music playing at the same time can't confuse it); null captures the normal [USAGES].
      */
-    fun start(playOnPhone: Boolean, onlyUsage: Int? = null): Capture {
-        val usages = if (onlyUsage == null) USAGES else intArrayOf(onlyUsage)
-        val mix = buildMix(buildRule(usages), playOnPhone)
+    fun start(playOnPhone: Boolean): Capture {
+        val mix = buildMix(buildRule(USAGES), playOnPhone)
         val policy = registerPolicy(ShellIdentity.context(), mix)
         val record = try {
             Reflect.callPublic(policy, "createAudioRecordSink", MIX to mix) as AudioRecord

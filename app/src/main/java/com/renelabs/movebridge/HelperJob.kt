@@ -20,7 +20,7 @@ import java.net.Inet4Address
 class BootReceiver : BroadcastReceiver() {
     override fun onReceive(c: Context, i: Intent) {
         if (i.action != Intent.ACTION_BOOT_COMPLETED && i.action != Intent.ACTION_MY_PACKAGE_REPLACED) return
-        if (Prefs.adbPaired(c)) HelperJob.schedule(c)
+        if (Prefs.advanced(c) && Prefs.adbPaired(c)) HelperJob.schedule(c)
     }
 }
 
@@ -56,7 +56,7 @@ class HelperJob : JobService() {
      * would pop up its "allow wireless debugging on this network?" question out of nowhere.
      */
     private fun shouldStart(c: Context): Boolean {
-        if (ShellLink.alive() || AudioOnly.status(c) != AudioOnly.Status.CAN_START) return false
+        if (!Prefs.advanced(c) || ShellLink.alive() || AudioOnly.status(c) != AudioOnly.Status.CAN_START) return false
         val home = Prefs.homeWifi(c)
         return home == null || home == WifiId.current(c)
     }

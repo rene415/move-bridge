@@ -16,7 +16,7 @@ The shell helper tells Android about the kernel's card itself, with the same cal
 Android then lists "USB-Audio - Ableton Move" as an output with the right profile (16-bit, 44.1 kHz, stereo) and routes media to it. No capture, no MediaProjection, no USB streaming by Move Bridge. The phone's volume buttons set the level, and the Move's MIDI port keeps working on the phone.
 
 How the pieces fit:
-- **Not a setting:** Direct mode is used whenever the helper runs or can be started (the one-time setup is done). Bridge mode (capture + our own USB streaming) is only the fallback.
+- **Part of Advanced mode:** with Advanced mode on, Direct mode is used whenever the helper runs or can be started (the one-time setup is done). Bridge mode (capture + our own USB streaming) is the fallback, and what regular users get.
 - **App side** (`DirectLink`): finds the card number from `MidiManager` (device properties `alsa_card` + `usb_device`), asks the helper to announce it (`IShellCapture.directOn`), and waits until Android lists the Move among its outputs. It then measures the delay on the route (silent `AudioTrack`s) for the Connection details.
 - **Helper side** (`DirectRoute`): announces the card, then watches `/sys/class/sound` and withdraws the route the moment the card disappears (Move unplugged), so Android is never left playing into a device that is gone. The card number is kept in `/data/local/tmp/mb_direct_card`: a restarted helper picks a live route back up, or withdraws a stale one.
 - **Move Bridge must not claim the Move's USB interfaces in this mode.** Claiming interface 1 makes the kernel drop the whole card, MIDI included (that's what Bridge mode does).
@@ -29,7 +29,6 @@ Things to know:
 - Everything Android plays goes to the Move in this mode, notification sounds included (Bridge mode only captures media, games and untagged audio).
 - Unplugging or pressing Stop works like pulling out headphones: Android pauses playing apps.
 - If the helper is killed while the route is on (for example USB debugging switched off), nothing withdraws the route at unplug until the helper runs again.
-- By hand, from a PC: `ShellProbe native-on 1`, `native-off 1`, `cards`, `out-latency`.
 
 ## No "open with" prompt (v0.16)
 Android asks which app to open on every plug-in when more than one app accepts the Move (any MIDI app with a generic USB-MIDI filter does). The helper now sets Move Bridge as the default app for the plugged-in Move: `IUsbManager.setDevicePackage(device, package, user)`, which needs `MANAGE_USB` (the shell user has it). It is the same as ticking "Always" in Android's dialog, is stored per device (serial number included), and survives restarts. Visible in `dumpsys usb` under `device_preferences`.
@@ -45,7 +44,7 @@ One wrinkle: `UsbDevice` refuses to be read in a process that claims to be a sys
 | Direct | low-latency app (48 kHz fast track) | ~40-45 ms | **~27 ms** |
 | Phone speaker, for reference | ordinary media app | not measured | ~213 ms |
 
-- Direct numbers are from `AudioTrack` timestamps (`ShellProbe out-latency`; the app shows the same measurement under Connection details); Bridge numbers from click tests (`ShellProbe latency-*`) plus the engine's own buffer and USB queue.
+- Direct numbers are from `AudioTrack` timestamps (the app shows the same measurement under Connection details); Bridge numbers are from click tests (a click played as media and timed on arrival in the capture) plus the engine's own buffer and USB queue.
 - **Android's floor on this phone is ~27 ms**, and only for apps that ask for low-latency audio. Ordinary media apps get Android's deep-buffer path (~170 ms inside the audio HAL) on every output, including the phone's own speaker.
 - Bridge mode is faster than Direct for ordinary media apps because the loopback takes tracks off the deep-buffer path. Its floor is set by Android's loopback device: 21 ms mixer period + a pipe that regulates to ~45-60 ms + 21 ms record period. None of that is tunable from outside.
 - 3-4 ms end to end isn't reachable from any phone: one USB audio hop plus the Move's own block size is already more than that.

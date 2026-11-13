@@ -15,7 +15,7 @@ body:
         - No sound on the Move
         - The sound is late
         - Crackles or dropouts
-        - Setup was confusing or failed
+        - Advanced mode's setup was confusing or failed
         - The app closed or froze
         - Something else
     validations:

@@ -41,9 +41,9 @@
     <!-- Settings -->
     <string name="settings">Settings</string>
     <string name="auto_start_title">Start when Move connects</string>
-    <string name="auto_start_body">Plug in and audio starts. No screens in between.</string>
+    <string name="auto_start_body">Plug in the Move and sending starts by itself.</string>
     <string name="stay_ready_title">Stay ready in background</string>
-    <string name="stay_ready_body">For the screen-share method: approve once per phone restart. Android shows its capture icon while ready.</string>
+    <string name="stay_ready_body">Approve Android\'s capture prompt once, and Move Bridge stays ready for the next plug-in until the phone restarts. Android shows its capture icon while ready.</string>
 
     <string name="details_closed">Connection details  ▾</string>
     <string name="details_open">Connection details  ▴</string>
@@ -81,6 +81,9 @@
     <string name="svc_shell_failed_detail">Tap Start again to send with screen sharing this time. To fix it for good, turn Wireless debugging on once in Developer options.</string>
 
     <!-- The to-do row in Settings: shown only while the one-time setup needs something -->
+    <string name="advanced_title">Advanced mode</string>
+    <string name="advanced_body">For tinkerers. Unlocks a lower-delay direct connection, which needs a one-time setup in Android\'s Developer options, and shows connection details. Off: nothing to set up.</string>
+    <string name="play_on_phone_basic">Your phone always plays along. Advanced mode can send to the Move only.</string>
     <string name="setup_row_title">Finish the one-time setup</string>
     <string name="setup_row_body">It lets Android play straight to your Move: the least delay and no screen-sharing prompt. Tap for the guide (about two minutes).</string>
     <string name="setup_row_wd_title">Turn Wireless debugging on once</string>
@@ -138,8 +141,8 @@
     <string name="tile_no_move">Move not plugged in</string>
 
     <!-- Setup guide -->
-    <string name="setup_title">Set up Move Bridge</string>
-    <string name="setup_body">A one-time setup, about two minutes, lets Android play straight to your Move: the least delay, no screen-sharing prompt, and nothing to tap when you plug in.</string>
+    <string name="setup_title">Play straight to the Move</string>
+    <string name="setup_body">This one-time setup, about two minutes, lets Android play straight to your Move: the least delay, no capture prompt, and nothing to tap when you plug in.</string>
     <string name="setup_steps_label">One-time setup</string>
     <string name="setup_step_1">Turn on Developer options</string>
     <string name="setup_step_2">Turn on Wireless debugging</string>
@@ -154,13 +157,13 @@
     <string name="setup_btn_wireless">Open Developer options</string>
     <string name="setup_btn_start">Start now</string>
     <string name="setup_btn_done">Done</string>
-    <string name="setup_skip">Not now: use screen sharing instead</string>
+    <string name="setup_skip">Not now</string>
     <string name="setup_why_label">Why Developer options?</string>
     <string name="setup_why_body">Android only lets its own debugging service start the small helper that Move Bridge needs to route audio. Move Bridge connects only to this phone itself, never to another device, and you can turn Wireless debugging off again afterwards.</string>
 
     <!-- What's new (rewritten for each release) -->
     <string name="whats_new_title">What\'s new in %1$s</string>
-    <string name="whats_new_body">• Simpler settings. The Audio-only mode and Direct to Move switches are gone: once the one-time setup is done, Move Bridge always plays straight to the Move.\n\n• If the setup isn\'t done yet, or Wireless debugging is needed after a restart, Settings tells you what to do.\n\n• The steps on the Move now match Ableton\'s manual, with a tip about monitoring.\n\n• Open-source licenses are listed at the bottom of the main screen.</string>
+    <string name="whats_new_body">• A simpler app. Sending needs no setup: plug in, tap Start, approve Android\'s prompt.\n\n• Everything technical now sits behind one Advanced mode switch in Settings: the lower-delay direct connection with its one-time setup, and the connection details. If your phone was already set up, Advanced mode stays on.\n\n• The steps on the Move follow Ableton\'s manual, with a tip about monitoring.\n\n• Open-source licenses are listed at the bottom of the main screen.</string>
     <string name="got_it">Got it</string>
 
     <!-- Beta card on the main screen -->
@@ -183,7 +186,7 @@
         <item>No sound on the Move</item>
         <item>The sound is late</item>
         <item>Crackles or dropouts</item>
-        <item>Setup was confusing</item>
+        <item>Something was confusing</item>
         <item>The app closed or froze</item>
         <item>An idea or a request</item>
     </string-array>
@@ -193,7 +196,7 @@
         <item>Which app were you playing from? Does the test tone reach the Move?</item>
         <item>Which app? About how late: a blink, half a second, more?</item>
         <item>Which app? All the time, or now and then? Does the test tone crackle too?</item>
-        <item>Which step were you on? What did you expect to see?</item>
+        <item>What were you trying to do? What did you expect to see?</item>
         <item>What were you doing right before it happened?</item>
         <item>What would make Move Bridge more useful for you?</item>
     </string-array>

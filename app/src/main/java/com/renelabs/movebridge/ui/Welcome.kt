@@ -8,7 +8,6 @@ import android.content.Intent
 import android.graphics.drawable.Icon
 import android.net.Uri
 import android.os.Build
-import com.renelabs.movebridge.AudioOnly
 import com.renelabs.movebridge.BridgeTile
 import com.renelabs.movebridge.BuildConfig
 import com.renelabs.movebridge.Crash
@@ -17,26 +16,22 @@ import com.renelabs.movebridge.R
 
 /**
  * What the app shows by itself when it opens:
- *  - the very first time: the setup guide
  *  - the first time after an update: what's new in this version
  *  - after a crash: an offer to send the crash report
- * At most one of them per start.
+ * At most one of them per start, and neither on a first start. Also the small screens and
+ * dialogs the main screen links to.
  */
 object Welcome {
     private const val MANUAL_SAMPLING_URL = "https://www.ableton.com/en/move/manual/#sampling-audio-via-usb-c"
 
-    /** Returns true if the setup guide was opened (the caller then leaves the permission prompts to it). */
-    fun onAppOpened(a: Activity): Boolean {
+    fun onAppOpened(a: Activity) {
         val seen = Prefs.seenVersion(a)
         Prefs.setSeenVersion(a, BuildConfig.VERSION_CODE)
-        val firstRun = seen == 0 && freshInstall(a)
-        val setup = firstRun && AudioOnly.status(a) == AudioOnly.Status.NOT_SET_UP
+        val updated = seen < BuildConfig.VERSION_CODE && !(seen == 0 && freshInstall(a))
         when {
-            setup -> openSetup(a)
-            seen < BuildConfig.VERSION_CODE && !firstRun -> showWhatsNew(a)
+            updated -> showWhatsNew(a)
             Crash.pending(a) != null -> offerCrashReport(a)
         }
-        return setup
     }
 
     fun openSetup(a: Activity) = a.startActivity(Intent(a, SetupActivity::class.java))

@@ -125,7 +125,7 @@ object Report {
     })
 
     private fun settings(c: Context): String = listOf(
-        "start on connect" to Prefs.autoStart(c), "set up" to Prefs.adbPaired(c),
+        "start on connect" to Prefs.autoStart(c), "advanced" to Prefs.advanced(c), "set up" to Prefs.adbPaired(c),
         "also on phone" to Prefs.playOnPhone(c),
         "start automatically" to Prefs.autoRestart(c), "mute notifications" to Prefs.muteWhileSending(c),
         "stay ready" to Prefs.stayArmed(c),
