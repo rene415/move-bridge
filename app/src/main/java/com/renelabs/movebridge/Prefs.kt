@@ -8,12 +8,10 @@ object Prefs {
     private const val AUTO_START = "autoStart"
     private const val STAY_ARMED = "stayArmed"
     private const val INTRO_SEEN = "introSeen"
-    private const val AUDIO_ONLY = "audioOnly"
     private const val ADB_PAIRED = "adbPaired"
     private const val AUTO_RESTART = "autoRestart"
     private const val PLAY_ON_PHONE = "playOnPhone"
     private const val SAVED_VOLUME = "savedVolume"
-    private const val DIRECT = "direct"
     private const val MUTE = "muteWhileSending"
     private const val RINGER_CHANGED = "ringerChanged"
     private const val SEEN_VERSION = "seenVersion"
@@ -29,26 +27,15 @@ object Prefs {
     fun stayArmed(c: Context) = sp(c).getBoolean(STAY_ARMED, false)
     fun setStayArmed(c: Context, v: Boolean) = sp(c).edit().putBoolean(STAY_ARMED, v).apply()
 
-    /** Capture through the shell helper (no screen-share treatment). Default off. */
-    fun audioOnly(c: Context) = sp(c).getBoolean(AUDIO_ONLY, false)
-    fun setAudioOnly(c: Context, v: Boolean) = sp(c).edit().putBoolean(AUDIO_ONLY, v).apply()
-
-    /**
-     * With audio-only mode on: let Android play straight to the Move (Direct mode) instead of
-     * capturing and sending the audio ourselves (Bridge mode). Default on.
-     */
-    fun direct(c: Context) = sp(c).getBoolean(DIRECT, true)
-    fun setDirect(c: Context, v: Boolean) = sp(c).edit().putBoolean(DIRECT, v).apply()
-
-    /** Paired with this phone's Wireless debugging (one-time setup for audio-only mode). */
+    /** Paired with this phone's Wireless debugging: the one-time setup is done. */
     fun adbPaired(c: Context) = sp(c).getBoolean(ADB_PAIRED, false)
     fun setAdbPaired(c: Context, v: Boolean) = sp(c).edit().putBoolean(ADB_PAIRED, v).apply()
 
-    /** After a restart, switch Wireless debugging on briefly to restart the audio-only helper. Default off. */
+    /** After a restart, switch Wireless debugging on briefly to start the helper again. Default off. */
     fun autoRestart(c: Context) = sp(c).getBoolean(AUTO_RESTART, false)
     fun setAutoRestart(c: Context, v: Boolean) = sp(c).edit().putBoolean(AUTO_RESTART, v).apply()
 
-    /** Audio-only mode: keep playing on the phone too. Default off (like an iPhone on the Move). */
+    /** Keep playing on the phone's speaker too. Default off (like an iPhone on the Move). */
     fun playOnPhone(c: Context) = sp(c).getBoolean(PLAY_ON_PHONE, false)
     fun setPlayOnPhone(c: Context, v: Boolean) = sp(c).edit().putBoolean(PLAY_ON_PHONE, v).apply()
 

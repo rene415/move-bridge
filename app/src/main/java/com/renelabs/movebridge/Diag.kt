@@ -125,8 +125,8 @@ object Report {
     })
 
     private fun settings(c: Context): String = listOf(
-        "start on connect" to Prefs.autoStart(c), "audio-only" to Prefs.audioOnly(c),
-        "direct" to Prefs.direct(c), "also on phone" to Prefs.playOnPhone(c),
+        "start on connect" to Prefs.autoStart(c), "set up" to Prefs.adbPaired(c),
+        "also on phone" to Prefs.playOnPhone(c),
         "start automatically" to Prefs.autoRestart(c), "mute notifications" to Prefs.muteWhileSending(c),
         "stay ready" to Prefs.stayArmed(c),
     ).joinToString(", ") { (name, on) -> "$name=${if (on) "on" else "off"}" }

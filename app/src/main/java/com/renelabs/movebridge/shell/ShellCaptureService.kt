@@ -19,7 +19,7 @@ import java.nio.ByteOrder
  * Bridge mode: captured audio goes back to the app over a pipe; the USB side stays in the app.
  * Direct mode: see [DirectRoute].
  */
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)  // audio-only mode needs Android 13+
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)  // the helper needs Android 13+
 class ShellCaptureService(
     /** Only this uid may call: Move Bridge's. */
     private val allowedUid: Int,

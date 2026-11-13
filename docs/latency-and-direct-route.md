@@ -16,7 +16,7 @@ The shell helper tells Android about the kernel's card itself, with the same cal
 Android then lists "USB-Audio - Ableton Move" as an output with the right profile (16-bit, 44.1 kHz, stereo) and routes media to it. No capture, no MediaProjection, no USB streaming by Move Bridge. The phone's volume buttons set the level, and the Move's MIDI port keeps working on the phone.
 
 How the pieces fit:
-- **Setting:** Settings → Audio-only mode → **Direct to Move** (on by default). Off means Bridge mode (capture + our own USB streaming). Switching applies to a live connection.
+- **Not a setting:** Direct mode is used whenever the helper runs or can be started (the one-time setup is done). Bridge mode (capture + our own USB streaming) is only the fallback.
 - **App side** (`DirectLink`): finds the card number from `MidiManager` (device properties `alsa_card` + `usb_device`), asks the helper to announce it (`IShellCapture.directOn`), and waits until Android lists the Move among its outputs. It then measures the delay on the route (silent `AudioTrack`s) for the Connection details.
 - **Helper side** (`DirectRoute`): announces the card, then watches `/sys/class/sound` and withdraws the route the moment the card disappears (Move unplugged), so Android is never left playing into a device that is gone. The card number is kept in `/data/local/tmp/mb_direct_card`: a restarted helper picks a live route back up, or withdraws a stale one.
 - **Move Bridge must not claim the Move's USB interfaces in this mode.** Claiming interface 1 makes the kernel drop the whole card, MIDI included (that's what Bridge mode does).

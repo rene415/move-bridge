@@ -16,7 +16,7 @@ import android.media.AudioRecord
  * shell user (and system) has, so this only works inside Move Bridge's shell-uid helper
  * process. It never runs in the normal app process.
  */
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)  // audio-only mode needs Android 13+
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)  // the helper needs Android 13+
 object ShellAudio {
     const val RATE = ShellProtocol.RATE
     private val RULE = Reflect.cls("android.media.audiopolicy.AudioMixingRule")

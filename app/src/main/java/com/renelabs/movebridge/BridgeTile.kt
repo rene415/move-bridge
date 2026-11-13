@@ -33,7 +33,7 @@ class BridgeTile : TileService() {
         when {
             isLive() -> runCatching { startService(BridgeService.intent(this, BridgeService.ACTION_STOP)) }
             move == null || !usb.hasPermission(move) -> openApp()
-            // Starting from here only works when no prompt is needed: audio-only mode, or capture already open.
+            // Starting from here only works when no prompt is needed: the helper is there, or capture is already open.
             else -> AudioOnly.whenKnown(this) { ok -> if (ok || BridgeService.captureOpen) start(move) else openApp() }
         }
     }

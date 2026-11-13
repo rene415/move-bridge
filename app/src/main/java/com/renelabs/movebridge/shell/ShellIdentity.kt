@@ -18,7 +18,7 @@ import android.os.Process
  * ("invalid attr ... packageName: android"). Mirrors scrcpy's Workarounds (Apache-2.0).
  * Call [context] first on the process's main thread: creating the ActivityThread needs a Looper.
  */
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)  // audio-only mode needs Android 13+
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)  // the helper needs Android 13+
 @SuppressLint("StaticFieldLeak")  // a system context in the helper process, kept for its lifetime
 internal object ShellIdentity {
     const val SHELL_PACKAGE = "com.android.shell"

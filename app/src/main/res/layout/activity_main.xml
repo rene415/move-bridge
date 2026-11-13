@@ -209,6 +209,11 @@
                     android:layout_marginBottom="4dp"
                     android:text="@string/settings" />
 
+                <!-- A to-do, not a setting: shown only while the one-time setup needs something. -->
+                <include
+                    android:id="@+id/rowSetup"
+                    layout="@layout/setting_row" />
+
                 <include
                     android:id="@+id/rowAuto"
                     layout="@layout/setting_row" />
@@ -217,15 +222,7 @@
                     android:id="@+id/rowMute"
                     layout="@layout/setting_row" />
 
-                <include
-                    android:id="@+id/rowAudioOnly"
-                    layout="@layout/setting_row" />
-
-                <!-- Audio-only sub-options: shown only while audio-only mode is on. -->
-                <include
-                    android:id="@+id/rowDirect"
-                    layout="@layout/setting_row" />
-
+                <!-- Shown once the one-time setup is done. -->
                 <include
                     android:id="@+id/rowPlayOnPhone"
                     layout="@layout/setting_row" />
@@ -234,7 +231,7 @@
                     android:id="@+id/rowAutoRestart"
                     layout="@layout/setting_row" />
 
-                <!-- Screen-share mode only: hidden while audio-only mode is on. -->
+                <!-- Screen-share capture only: shown while the one-time setup isn't done. -->
                 <include
                     android:id="@+id/rowArmed"
                     layout="@layout/setting_row" />

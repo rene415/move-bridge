@@ -19,7 +19,7 @@ import java.io.File
  * the Move Bridge app process (re)starts, it hands the app that service's Binder through
  * [com.renelabs.movebridge.ShellLinkProvider]. It never starts the app itself.
  */
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)  // audio-only mode needs Android 13+
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)  // the helper needs Android 13+
 object ShellMain {
     private const val AUTHORITY = ShellProtocol.AUTHORITY
     private const val METHOD_BINDER = ShellProtocol.METHOD_BINDER

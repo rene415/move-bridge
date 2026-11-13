@@ -100,7 +100,7 @@ class MainActivity : Activity() {
         ShellLink.onChange = refreshSettings
         refreshMove()
         settings.render()
-        AudioOnly.warmUp(this)  // get audio-only mode running before the Move is plugged in
+        AudioOnly.warmUp(this)  // get the helper running before the Move is plugged in
         resumed = true
         adoptDirect()
     }
@@ -199,7 +199,7 @@ class MainActivity : Activity() {
         AudioOnly.whenKnown(this) { usable ->
             val d = findMove()
             val fresh = resumed && !BridgeService.hasRun
-            if (fresh && usable && d != null && Prefs.direct(this) && usb.hasPermission(d) && DirectLink.isRouted(this))
+            if (fresh && usable && d != null && usb.hasPermission(d) && DirectLink.isRouted(this))
                 go(d, tone = false)
         }
     }
@@ -259,7 +259,7 @@ class MainActivity : Activity() {
     /** Start streaming to [d] (or just get ready when d is null). */
     private fun go(d: UsbDevice?, tone: Boolean) {
         if (d != null && (tone || BridgeService.captureOpen || AudioOnly.usable(this))) {
-            // Test tone, capture already open, or audio-only mode: no prompt needed.
+            // Test tone, capture already open, or the helper is there: no prompt needed.
             val action = if (tone) BridgeService.ACTION_TONE else BridgeService.ACTION_ATTACH
             startForegroundService(BridgeService.intent(this, action, d))
             return

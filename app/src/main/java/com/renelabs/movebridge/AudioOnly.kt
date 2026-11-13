@@ -7,10 +7,14 @@ import com.renelabs.movebridge.adb.ShellStarter
 import com.renelabs.movebridge.shell.IShellCapture
 
 /**
- * Audio-only mode: work through a shell-user helper instead of MediaProjection, so Android
- * doesn't treat the session as screen sharing. With the helper, Move Bridge can either let
- * Android play straight to the Move (Direct mode, the default) or capture the audio and send it
- * itself (Bridge mode). The helper comes from, in order:
+ * The shell-user helper, and whether it can be used right now. With the helper, Move Bridge
+ * works without MediaProjection, so Android doesn't treat a session as screen sharing: Android
+ * plays straight to the Move (Direct mode), or, if that fails, the helper captures the audio and
+ * the app sends it (Bridge mode).
+ *
+ * This is not a setting. Once the one-time setup is done, the helper is always used when it runs
+ * or can be started; when it can't, the app falls back to Android's screen-share capture by itself.
+ * The helper comes from, in order:
  *  1. Move Bridge's own helper, already running (started earlier through Wireless debugging)
  *  2. Move Bridge's own helper, started now through Wireless debugging (on, or switched on by us)
  */
@@ -23,6 +27,13 @@ object AudioOnly {
         RUNNING,                   // our helper is running
     }
 
+    private const val HELPER_WAIT_MS = 4000L
+    private const val BINDER_WAIT_MS = 1500L
+
+    @Volatile private var starting = false
+    /** The last attempt to start the helper failed: don't count on it until one succeeds. */
+    @Volatile private var startFailed = false
+
     fun status(c: Context): Status {
         if (Build.VERSION.SDK_INT < 33) return Status.UNSUPPORTED
         if (ShellLink.alive()) return Status.RUNNING
@@ -32,12 +43,12 @@ object AudioOnly {
         return Status.NEEDS_WIRELESS_DEBUGGING
     }
 
-    /** Audio-only mode is on and a plug-in can use it now (possibly after starting the helper). */
-    fun usable(c: Context): Boolean =
-        Prefs.audioOnly(c) && status(c).let { it == Status.RUNNING || it == Status.CAN_START }
-
-    /** Direct mode is switched on and the helper it needs can run. */
-    fun directWanted(c: Context): Boolean = Prefs.direct(c) && usable(c)
+    /** A plug-in can use the helper now (possibly after starting it). Otherwise: screen-share capture. */
+    fun usable(c: Context): Boolean = when (status(c)) {
+        Status.RUNNING -> true
+        Status.CAN_START -> !startFailed
+        else -> false
+    }
 
     /**
      * Calls [done] on [main] with the running helper, starting it through Wireless debugging first
@@ -67,7 +78,11 @@ object AudioOnly {
         if (ShellLink.alive()) return true
         val r = ShellStarter.start(app, grantSecureSettings = Prefs.autoRestart(app))
         Diag.i("helper start: ${r.javaClass.simpleName} ${(r as? ShellStarter.Result.Failed)?.reason ?: ""}")
-        return r is ShellStarter.Result.Started
+        // Android no longer accepts our pairing key (debugging authorizations were revoked):
+        // the one-time setup has to be done again, and Settings says so.
+        if (r is ShellStarter.Result.NotPaired) Prefs.setAdbPaired(app, false)
+        startFailed = r !is ShellStarter.Result.Started
+        return !startFailed
     }
 
     /**
@@ -83,21 +98,17 @@ object AudioOnly {
         }.start()
     }
 
-    private const val HELPER_WAIT_MS = 4000L
-
-    @Volatile private var starting = false
-
     /**
-     * Starts our helper in the background if audio-only mode is on and it isn't running yet, so
-     * it's ready before the Move is plugged in. Safe to call often.
+     * Starts our helper in the background if the setup is done and it isn't running yet, so it's
+     * ready before the Move is plugged in. Safe to call often.
      */
     fun warmUp(c: Context) {
         val app = c.applicationContext
-        if (starting || !Prefs.audioOnly(app) || status(app) != Status.CAN_START) return
+        if (starting || status(app) != Status.CAN_START) return
         starting = true
         // A helper that's already running hands over its binder within a second of our process
         // starting; wait for that before starting a new one.
-        ShellLink.await(1500) { alive -> if (alive) starting = false else startNow(app) }
+        ShellLink.await(BINDER_WAIT_MS) { alive -> if (alive) starting = false else startNow(app) }
     }
 
     private fun startNow(app: Context) {
@@ -111,8 +122,8 @@ object AudioOnly {
      * Binder. Waits for that, then reports [usable].
      */
     fun whenKnown(c: Context, done: (Boolean) -> Unit) {
-        if (!Prefs.audioOnly(c) || Build.VERSION.SDK_INT < 33) return done(false)
+        if (Build.VERSION.SDK_INT < 33 || !Prefs.adbPaired(c)) return done(false)
         if (ShellLink.alive()) return done(true)
-        ShellLink.await(1500) { done(usable(c)) }
+        ShellLink.await(BINDER_WAIT_MS) { done(usable(c)) }
     }
 }

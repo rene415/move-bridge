@@ -6,7 +6,7 @@ import com.renelabs.movebridge.Prefs
 
 /**
  * Android captures audio AFTER the phone's media volume, so a low volume means a quiet sample on
- * the Move (volume 6/15 measured ~13 dB down). While the phone itself is silent (audio-only mode
+ * the Move (volume 6/15 measured ~13 dB down). While the phone itself is silent (capture through the helper
  * with "Also play on phone" off), raising the media volume costs nothing, so we raise it to max
  * and put it back afterwards. The original level is saved in Prefs so it's restored even if the
  * app was killed mid-stream.

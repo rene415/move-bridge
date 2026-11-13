@@ -22,8 +22,8 @@ android {
         applicationId = "com.renelabs.movebridge"
         minSdk = 29          // AudioPlaybackCapture needs Android 10+
         targetSdk = 36
-        versionCode = 17
-        versionName = "0.17"
+        versionCode = 18
+        versionName = "0.18"
         // The project's public page (GitHub). If empty, the app hides its links to it.
         buildConfigField("String", "REPO_URL", "\"https://github.com/rene415/move-bridge\"")
         ndk { abiFilters += listOf("arm64-v8a") }

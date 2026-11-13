@@ -56,17 +56,18 @@ To stop: tap **Stop sending audio** in the notification, in the app, or on the Q
 |---|---|
 | **Start when Move connects** | Plug in and audio starts, with no screens in between. |
 | **Mute notifications while sending** | Puts the phone on vibrate while sending, so rings and pings don't land in your samples. Alarms still sound. |
-| **Audio-only mode** | The one-time setup above. No screen-share prompt, no capture icon, notifications stay visible. |
-| **Direct to Move** | Android plays straight to the Move, like USB-C headphones. Least delay, the phone's volume buttons set the level, and the Move's MIDI keeps working on the phone. |
-| **Also play on phone** | The phone's speaker plays too. |
-| **Start automatically** | After a phone restart, Move Bridge turns Wireless debugging on for a moment by itself to start its helper again, then off. Needs Wi-Fi. |
-| **Stay ready in background** | Only without audio-only mode: keeps the screen-share permission between plug-ins. |
+| **Also play on phone** | The phone's speaker plays too, together with the Move. Shown once the setup is done. |
+| **Start automatically** | After a phone restart, Move Bridge turns Wireless debugging on for a moment by itself to start its helper again, then off. Needs Wi-Fi. Shown once the setup is done. |
+| **Stay ready in background** | Only without the setup: keeps the screen-share permission between plug-ins. |
+
+There is no switch for *how* the audio gets to the Move. Move Bridge always uses the best way your phone can do right now (see below). If the one-time setup isn't done, or Wireless debugging is needed once after a restart, the settings show a line that says so; tap it.
 
 <img src="docs/screens/settings.png" width="320" alt="The settings card">
 
 ## The two ways it sends audio
-- **Direct mode** (with the one-time setup): Android itself plays to the Move. Nothing is captured.
-- **Bridge mode** (any Android 10+ phone, and the fallback): Move Bridge captures what the phone plays and sends it to the Move's USB audio input itself. Without the setup this uses Android's screen-share permission; only audio is taken, never the screen.
+Move Bridge picks by itself:
+- **Direct** (with the one-time setup, always used when possible): Android itself plays to the Move, like USB-C headphones. Nothing is captured, the phone's volume buttons set the level, and the Move's MIDI keeps working on the phone.
+- **Bridge** (any Android 10+ phone, and the fallback): Move Bridge captures what the phone plays and sends it to the Move's USB audio input itself. Without the setup this uses Android's screen-share permission; only audio is taken, never the screen.
 
 Delay, measured on a Samsung Galaxy S26 Ultra (your phone will differ; the app shows its own measurement under **Connection details**):
 
@@ -79,9 +80,9 @@ Delay, measured on a Samsung Galaxy S26 Ultra (your phone will differ; the app s
 Android itself sets these numbers. Details: [docs/latency-and-direct-route.md](docs/latency-and-direct-route.md).
 
 ## Known limits
-- In Direct mode everything Android plays goes to the Move, notification sounds included (and normally phone calls too). Use **Mute notifications while sending** to keep pings out.
-- In Bridge mode, apps that block capture (some streaming services) come through silent.
-- Developer options have to stay enabled for audio-only mode. After a phone restart the helper has to start again: automatically with **Start automatically**, or when you turn Wireless debugging on once.
+- With Direct, everything Android plays goes to the Move, notification sounds included (and normally phone calls too). Use **Mute notifications while sending** to keep pings out.
+- With Bridge, apps that block capture (some streaming services) come through silent.
+- Developer options have to stay enabled for Direct. After a phone restart the helper has to start again: automatically with **Start automatically**, or when you turn Wireless debugging on once.
 - Tested so far on a Samsung Galaxy S26 Ultra with Android 17. Reports from other phones are very welcome.
 
 ## Feedback

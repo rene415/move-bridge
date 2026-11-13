@@ -43,7 +43,7 @@ class ConnectActivity : Activity() {
     private fun route(d: UsbDevice, audioOnly: Boolean) {
         when {
             !Prefs.autoStart(this) -> openApp(d)
-            // Audio-only mode, or capture already open: the service needs nothing else from us.
+            // The helper is there, or capture is already open: the service needs nothing else from us.
             audioOnly || BridgeService.captureOpen -> {
                 startForegroundService(BridgeService.intent(this, BridgeService.ACTION_ATTACH, d))
                 finish()

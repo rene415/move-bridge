@@ -9,7 +9,7 @@ Move Bridge exists to make the Ableton Move more useful with Android phones. It 
 
 ## What stays on your phone
 - Your settings.
-- The pairing key for your phone's own Wireless debugging (audio-only mode).
+- The pairing key for your phone's own Wireless debugging (from the one-time setup).
 - A scrambled fingerprint of the Wi-Fi network the setup was done on, so "Start automatically" only acts there. It never leaves the phone.
 - The app's own recent log, in memory only, and the reason for the last crash if there was one.
 
@@ -32,7 +32,7 @@ Reports are used to fix and improve Move Bridge, and for nothing else. A GitHub 
 |---|---|
 | USB access to the Move | To send audio to it. |
 | Record audio | Android requires it for capturing what the phone plays in Bridge mode. The microphone is never used. |
-| Screen-share ("media projection") prompt | Only without audio-only mode: it is Android's only capture permission for other apps' sound. Move Bridge takes the audio and never the screen. |
+| Screen-share ("media projection") prompt | Only without the one-time setup: it is Android's only capture permission for other apps' sound. Move Bridge takes the audio and never the screen. |
 | Notifications | The "Stop sending audio" notification, and typing the pairing code during setup. |
 | Run in the foreground | To keep sending while you use other apps. |
 | Internet | Only to talk to your phone's own Wireless debugging service, on the phone itself. Move Bridge contacts no server. |
@@ -40,4 +40,4 @@ Reports are used to fix and improve Move Bridge, and for nothing else. A GitHub 
 | Start after a restart, network state | To start the helper again after a restart once the phone is on Wi-Fi. |
 
 ## The helper
-Audio-only mode starts a small helper through your phone's Wireless debugging. It runs with the rights of Android's debugging shell, which are broader than a normal app's. It is part of this app, its source is in this repository (`app/src/main/java/.../shell`), and it does three things: tells Android to play to the Move, captures playback for Bridge mode, and makes Move Bridge the default app for the Move. It only accepts commands from Move Bridge itself and stops when the phone restarts.
+The one-time setup lets Move Bridge start a small helper through your phone's Wireless debugging. It runs with the rights of Android's debugging shell, which are broader than a normal app's. It is part of this app, its source is in this repository (`app/src/main/java/.../shell`), and it does three things: tells Android to play to the Move, captures playback for Bridge mode, and makes Move Bridge the default app for the Move. It only accepts commands from Move Bridge itself and stops when the phone restarts.

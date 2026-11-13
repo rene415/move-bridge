@@ -2,6 +2,13 @@
 
 The app shows the newest entry once after each update ("What's new").
 
+## 0.18
+- **Simpler settings.** The "Audio-only mode" and "Direct to Move" switches are gone. Once the one-time setup is done, Move Bridge always plays straight to the Move; without it, it falls back to screen-share capture by itself.
+- When the setup isn't done, or Wireless debugging is needed once after a restart, Settings shows a line that says so.
+- If Android forgets the pairing, the app notices and offers the setup again.
+- The steps on the Move follow Ableton's manual, with a tip about monitoring and a link to the manual.
+- Apache-2.0 license; the licenses of included code are listed in the app.
+
 ## 0.17
 - **Also play on phone** now works with Direct to Move: phone speaker and Move play together, from the same Android mixer.
 - **Mute notifications while sending:** the phone goes on vibrate while sending, so rings and pings don't land in samples.

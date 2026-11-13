@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- Indent for settings that belong to the row above (audio-only sub-options). -->
-    <dimen name="sub_row_indent">20dp</dimen>
-</resources>

@@ -15,11 +15,10 @@ body:
   - type: dropdown
     id: mode
     attributes:
-      label: Which mode do you use?
+      label: How do you use it?
       options:
-        - Direct to Move
-        - Audio-only mode with Direct off
-        - Screen sharing (no setup)
+        - With the one-time setup done
+        - Without the setup (screen sharing)
         - Not sure
   - type: textarea
     id: use

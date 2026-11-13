@@ -21,7 +21,7 @@ import kotlin.system.exitProcess
  * Records 3 s of whatever is playing (with "tone": a 440 Hz media tone it plays itself) and prints
  * the peak level.
  */
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)  // audio-only mode needs Android 13+
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)  // the helper needs Android 13+
 object ShellProbe {
     private const val SECONDS = 3
 

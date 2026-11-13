@@ -1,4 +1,4 @@
-# Audio-only mode: working without screen sharing
+# The helper: working without screen sharing
 
 ## Why plain capture looks like screen sharing
 - Android's public way to capture other apps' sound is `AudioPlaybackCapture`. It only works with a `MediaProjection`, which is Android's **screen-capture** session. There is no public audio-only capture permission (checked up to Android 17).

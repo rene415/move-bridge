@@ -21,7 +21,7 @@ import com.renelabs.movebridge.adb.Pairing
 import com.renelabs.movebridge.adb.ShellStarter
 
 /**
- * The one-time setup guide for audio-only mode (which Direct mode needs). It shows the four
+ * The guide for the one-time setup (it gives Move Bridge its helper, which Direct mode needs). It shows the four
  * steps, ticks them off as the phone's state changes, and its button always does the next thing.
  * Skipping is fine: the app then uses Android's screen-share permission instead.
  */
@@ -93,14 +93,12 @@ class SetupActivity : Activity() {
             checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             return requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 0)  // then tap the button again
         }
-        Prefs.setAudioOnly(this, true)
         Pairing.begin(this)
         open(Pairing.developerSettingsIntent())
     }
 
     /** Paired, but the helper isn't running (after a restart): start it, or ask for Wireless debugging. */
     private fun startHelper() {
-        Prefs.setAudioOnly(this, true)
         if (AudioOnly.status(this) == AudioOnly.Status.CAN_START) AudioOnly.warmUp(this)
         else open(Pairing.developerSettingsIntent())
     }

@@ -20,13 +20,13 @@ import java.net.Inet4Address
 class BootReceiver : BroadcastReceiver() {
     override fun onReceive(c: Context, i: Intent) {
         if (i.action != Intent.ACTION_BOOT_COMPLETED && i.action != Intent.ACTION_MY_PACKAGE_REPLACED) return
-        if (Prefs.audioOnly(c) && Prefs.adbPaired(c)) HelperJob.schedule(c)
+        if (Prefs.adbPaired(c)) HelperJob.schedule(c)
     }
 }
 
 /**
  * Starts the shell helper in the background once the phone is on Wi-Fi (Wireless debugging,
- * which starts the helper, only works on Wi-Fi). Does nothing unless audio-only mode is set up and
+ * which starts the helper, only works on Wi-Fi). Does nothing unless the one-time setup is done and
  * the helper can be started without the user: Wireless debugging is on, or "Start automatically"
  * lets Move Bridge switch it on for a moment.
  */

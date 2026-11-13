@@ -20,9 +20,10 @@ import com.renelabs.movebridge.capture.ShellCapture
 /**
  * Foreground service that gets the phone's audio to the Move, one of two ways:
  *  - Direct mode ([DirectLink]): Android itself plays to the Move, like USB-C headphones. Needs
- *    the shell helper (audio-only mode). Nothing is captured.
+ *    the shell helper (the one-time setup). Nothing is captured. Always used when possible.
  *  - Bridge mode: capture ([CaptureSource], via MediaProjection or the shell helper) plus our own
  *    USB streaming ([UsbLink]). Works on any phone, and is the fallback when Direct can't start.
+ * Which one runs is not a setting: the service picks the best one the phone can do right now.
  * With "stay ready", MediaProjection capture stays open between plug-ins so a plug-in only needs
  * the USB part.
  */
@@ -35,8 +36,6 @@ class BridgeService : Service() {
         const val ACTION_STOP = "com.renelabs.movebridge.STOP"
         /** Restart audio-only capture (e.g. "Also play on phone" changed); the Move stays connected. */
         const val ACTION_RECAPTURE = "com.renelabs.movebridge.RECAPTURE"
-        /** "Audio-only mode" or "Direct to Move" was switched: reconnect the plugged-in Move accordingly. */
-        const val ACTION_REROUTE = "com.renelabs.movebridge.REROUTE"
         const val EXTRA_RESULT_CODE = "resultCode"
         const val EXTRA_RESULT_DATA = "resultData"
         private const val TICK_MS = 100L
@@ -129,7 +128,6 @@ class BridgeService : Service() {
             ACTION_TONE -> onConnect(dev, tone = true)
             ACTION_STOP -> shutdown()
             ACTION_RECAPTURE -> recapture()
-            ACTION_REROUTE -> reroute()
             else -> stopIfIdle()
         }
         return START_NOT_STICKY
@@ -160,7 +158,7 @@ class BridgeService : Service() {
         directFellBack = false
         when {
             dev == null -> fail(getString(R.string.err_not_found_title))
-            AudioOnly.directWanted(this) -> startDirect(dev, tone)
+            AudioOnly.usable(this) -> startDirect(dev, tone)  // the helper is there: let Android play to the Move
             else -> startBridge(dev, tone)
         }
     }
@@ -172,30 +170,6 @@ class BridgeService : Service() {
             AudioOnly.usable(this) -> openShell { ok -> if (ok) attach(dev, toneMode = false) else shellFailed() }
             else -> fail(getString(R.string.svc_capture_not_ready))
         }
-    }
-
-    /** A mode setting was switched while connected: reconnect the same Move the way it now says. */
-    private fun reroute() {
-        val dev = attached
-        if (dev == null || !isLive() || toneActive) return stopIfIdle()
-        directFellBack = false
-        when {
-            AudioOnly.directWanted(this) -> startDirect(dev, tone = false)
-            AudioOnly.usable(this) -> rerouteToBridge(dev)
-            capture?.isProjection == true -> Unit  // already sending the screen-share way
-            // Audio-only mode was switched off: screen sharing needs the user's consent first.
-            else -> shutdown(getString(R.string.svc_audio_only_off))
-        }
-    }
-
-    /** To Bridge mode with audio-only capture, coming from Direct mode or from screen-share capture. */
-    private fun rerouteToBridge(dev: UsbDevice) {
-        if (usbActive && capture is ShellCapture) return  // already there
-        val s = beginConnect()
-        if (capture?.isProjection == true) closeCapture()
-        directActive = false
-        // Android must have let go of the Move's sound card before we take the USB interfaces.
-        direct.stop { if (s == connectSeq) startBridge(dev, tone = false) }
     }
 
     /** A command arrived with nothing to act on: don't linger as a started service. */
@@ -218,7 +192,8 @@ class BridgeService : Service() {
         AudioOnly.withHelper(this, main) { svc ->
             when {
                 s != connectSeq -> Unit  // stopped or replaced meanwhile
-                svc == null -> directFailed(dev, tone)
+                // No helper after all. The test tone can still go out over USB; sending needs capture.
+                svc == null -> if (tone) attach(dev, toneMode = true) else shellFailed()
                 else -> direct.start(dev, svc) { ok -> onDirectResult(ok, dev, tone, retry) }
             }
         }
@@ -242,7 +217,7 @@ class BridgeService : Service() {
         direct.describe { text -> if (directActive) showStats(text) }
     }
 
-    /** No helper, or the Move's sound card didn't show up: send the audio ourselves instead. */
+    /** The Move's sound card didn't show up for Android: capture the audio and send it ourselves instead. */
     private fun directFailed(dev: UsbDevice, tone: Boolean) {
         Diag.w("direct mode not available: using bridge mode")
         directFellBack = true
@@ -276,7 +251,7 @@ class BridgeService : Service() {
         if (Build.VERSION.SDK_INT >= 33) intent.getParcelableExtra(EXTRA_RESULT_DATA, Intent::class.java)
         else intent.getParcelableExtra(EXTRA_RESULT_DATA)
 
-    /** Audio-only mode: capture through a shell helper. [done] runs on the main thread. */
+    /** Capture through the shell helper, with no MediaProjection. [done] runs on the main thread. */
     private fun openShell(announce: Boolean = true, done: (Boolean) -> Unit) {
         val seq = captureSeq
         if (announce) publish(BridgeState(Phase.IDLE, getString(R.string.state_connecting), ""))
